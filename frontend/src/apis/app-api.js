@@ -23,7 +23,7 @@ export function registerAccount(credentials) {
 
 export function loginAccount(credentials) {
     return axios
-        .post(`${HOST}/api/user/login`, {
+        .post(`${HOST}/api/auth/login`, {
             username: credentials.username,
             password: credentials.password,
             headers: {
@@ -40,10 +40,10 @@ export function loginAccount(credentials) {
 
 export function verifyToken(token) {
     return axios
-        .post(`${HOST}/api/user/verify`, {
-            token,
+        .post(`${HOST}/api/auth/verify`, {
             headers: {
                 Accept: CONTENT_TYPE_JSON,
+                authorization: token,
             },
         })
         .then((resp) => ({ data: resp.data, error: false }))
