@@ -1,0 +1,95 @@
+body {
+    background-color: #eef3f6;
+}
+
+.main-logo {
+    height: 96px;
+}
+
+.app-main {
+    height: 100vh;
+}
+
+.app-bar {
+    background-color: white !important;
+    border-bottom: 1px solid lightgray;
+}
+
+.app-bar-logo {
+    margin-left: 16px;
+    margin-right: 16px;
+    height: 48px;
+    cursor: pointer;
+}
+
+.main-router-content {
+    margin: 20px 20px 20px 260px;
+}
+
+.full-width-class {
+    width: 100% !important;
+}
+
+.app-error-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-error {
+    width: 100%;
+}
+
+.app-error-button {
+    width: 300px;
+    margin: auto !important;
+}
+
+.app-bar-search-bar {
+    display: flex;
+    flex-grow: 1;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.dialog-flex {
+    display: flex;
+}
+
+.margin-top {
+    margin-top: 8px;
+}
+
+.profile-page-picture {
+    border: solid 1px  rgb(0, 178, 210);
+    border-radius: 5px;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    object-fit: cover;
+}
+
+.upload-post-image {
+    border: solid 1px  rgb(0, 178, 210);
+    border-radius: 5px;
+    width: 480px;
+    height: 270px;
+    margin: auto;
+    object-fit: contain;
+}
+
+.post-image {
+    border: solid 1px  rgb(0, 178, 210);
+    border-radius: 5px;
+    width: 560;
+    height: 315px;
+    margin: auto;
+    object-fit: contain;
+}
+
+textarea {
+    resize: none;
+}
+
+ul {
+    margin-top: 0;
+}

@@ -1,0 +1,39 @@
+.login-container {
+    text-align: center;
+    margin-top: 128px;
+}
+
+.main-panel {
+    margin: 16px auto auto auto;
+    padding: 32px 16px 32px 16px;
+    width: 460px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.main-panel-error {
+    margin: 0px 32px 16px 32px;
+}
+
+.login-panel-main-title {
+    padding: 18px 36px 36px 36px;
+    color: gray;
+}
+
+.helper-text-field {
+    margin: 0 32px 16px 32px !important;
+    background-color: #f8fdff;
+    .MuiFormHelperText-root {
+        background-color: white;
+    }
+}
+
+.standard-panel-text-field {
+    margin: 0 32px 32px 32px !important;
+    background-color: #f8fdff;
+}
+
+.login-panel-main-button {
+    width: 160px;
+    right: 0px !important;
+}
