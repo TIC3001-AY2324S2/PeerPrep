@@ -16,9 +16,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { withSnackbar } from 'notistack';
 import {
     initialLoginPageState,
-    snackBarProps,
 } from '../../constants/constants';
 import axios from 'axios';
+import { showSuccessBar } from '../../constants/snack-bar';
 
 class LoginComponent extends React.Component {
     constructor(props) {
@@ -64,10 +64,7 @@ class LoginComponent extends React.Component {
                             });
                         } else {
                             // Open snackbar to display register success
-                            this.props.enqueueSnackbar(
-                                `Successfully registered an account for [${this.state.username}]!`,
-                                snackBarProps('success'),
-                            );
+                            showSuccessBar(`Successfully registered an account for [${this.state.username}]!`);
                             this.props.navigate('/login');
                         }
                         this.props.setIsLoading(false);
@@ -85,10 +82,7 @@ class LoginComponent extends React.Component {
                             });
                         } else {
                             // Open snackbar to display login success
-                            this.props.enqueueSnackbar(
-                                `Successfully logged in to [${this.state.username}]!`,
-                                snackBarProps('success'),
-                            );
+                            showSuccessBar(`Successfully logged in to [${this.state.username}]!`);
                             localStorage.setItem('token', res.data.token);
                             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
                             this.props.setToken(res.data.token);

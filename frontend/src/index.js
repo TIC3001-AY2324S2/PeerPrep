@@ -9,7 +9,14 @@ import store from './state/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+    <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={3000}
+        Components={{
+            success: StyledMaterialDesignContent,
+            error: StyledMaterialDesignContent,
+        }}
+    >
         <Provider store={store}>
             <BrowserRouter>
                 <App />

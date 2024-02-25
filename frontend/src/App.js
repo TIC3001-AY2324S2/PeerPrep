@@ -8,6 +8,7 @@ import { MainSelectors } from './state/selectors';
 import { MainActions } from './state/actions';
 import axios from 'axios';
 import { verifyToken } from './apis/app-api';
+import { showErrorBar } from './constants/snack-bar';
 
 const App = (props) => {
     let navigate = useNavigate();
@@ -48,7 +49,7 @@ const App = (props) => {
                     'Authorization'
                 ] = `Bearer ${token}`;
             } else if (!isLoginPage) {
-                // TODO Maybe display snackbar to ask user to log in?
+                showErrorBar('Please log in to continue.')
                 axios.defaults.headers.common['Authorization'] = '';
                 navigate('/login');
             }
