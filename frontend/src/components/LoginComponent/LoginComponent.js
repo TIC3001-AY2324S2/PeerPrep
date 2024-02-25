@@ -13,7 +13,6 @@ import './LoginComponent.scss';
 import NavigateButton from '../NavigateButton';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { withSnackbar } from 'notistack';
 import {
     initialLoginPageState,
 } from '../../constants/constants';
@@ -319,4 +318,4 @@ class LoginComponent extends React.Component {
     }
 }
 
-export default withSnackbar(LoginComponent);
+export default LoginComponent;

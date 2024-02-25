@@ -1,8 +1,7 @@
-import HueButton from 'hue-react-component/build/HueButton';
-import HueIcon from 'hue-react-component/build/HueIcon/HueIcon';
+import CancelIcon from '@mui/icons-material/Cancel';
 import React from 'react';
 import { MaterialDesignContent, enqueueSnackbar, useSnackbar } from 'notistack';
-import { styled } from '@material-ui/core';
+import { IconButton, styled } from '@mui/material';
 
 /**
  * Custom noti-stack snack bar button and behaviour
@@ -12,16 +11,18 @@ import { styled } from '@material-ui/core';
 const SnackBarAction = (snackbarId, callback) => {
   const { closeSnackbar } = useSnackbar();
   return (
-    <HueButton
+    <IconButton
+      style={{ cursor: 'pointer' }}
       onClick={() => {
         closeSnackbar(snackbarId);
         if (callback) {
           callback();
         }
       }}
-      style={{ cursor: 'pointer' }}>
-      <HueIcon icon="cancel" color="white" size={12} />
-    </HueButton>
+      onMouseDown={(e) => e.preventDefault}
+    >
+      <CancelIcon style={{ color: 'white' }} size={12} />
+    </IconButton>
   );
 };
 

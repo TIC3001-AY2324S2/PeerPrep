@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import store from './state/store';
+import { StyledMaterialDesignContent } from './constants/snack-bar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

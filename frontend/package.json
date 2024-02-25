@@ -7,13 +7,13 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.10.0",
+    "@mui/material": "^5.15.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "moment": "^2.29.4",
-    "notistack": "^2.0.5",
+    "notistack": "^3.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@mui/base": "^5.0.0-alpha.98",
     "prettier": "2.7.1"
   }
