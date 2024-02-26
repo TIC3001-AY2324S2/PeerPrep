@@ -70,14 +70,14 @@ class BasePage extends React.Component {
                                     >
                                         <Avatar
                                             sx={{ width: 32, height: 32 }}
-                                            src={this.props.userInfo.profile_picture ?
+                                            src={this.props.userInfo?.profile_picture ?
                                                 this.props.userInfo.profile_picture:
                                                 `/static/user-avatar-default.png`}
                                         >
                                             M
                                         </Avatar>
                                         <span style={{ marginLeft: '8px', marginRight: '8px    ' }}>
-                                            {this.props.userInfo.username ? this.props.userInfo.username : 'Username' }
+                                            {this.props.userInfo?.username ? this.props.userInfo.username : 'Username' }
                                         </span>
                                         <ExpandMoreIcon style={{ marginRight: '8px' }} />
                                     </Button>

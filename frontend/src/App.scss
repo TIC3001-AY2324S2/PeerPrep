@@ -33,10 +33,13 @@ body {
 .app-error-container {
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .app-error {
-    width: 100%;
+    width: 25%;
+    margin: auto;
+    text-align: center;
 }
 
 .app-error-button {
