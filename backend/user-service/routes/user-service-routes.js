@@ -18,7 +18,7 @@ router.get("/all", verifyAccessToken, verifyIsAdmin, getAllUsers);
 
 router.get("/", verifyAccessToken, verifyEmail, getUserByEmail);
 
-router.post("/", createUser);
+router.post("/register", createUser);
 
 router.patch("/", verifyAccessToken, verifyId, updateUser);
 
