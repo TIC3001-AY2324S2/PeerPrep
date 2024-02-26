@@ -20,6 +20,7 @@ class ErrorPage extends React.Component {
                             <Grid xs style={{ position: 'relative' }}>
                                 <Item style={{ padding: '16px' }}>
                                     <div className={'app-error-container'}>
+                                        An error has occured.
                                         <img
                                             draggable={false}
                                             src="/static/404_1.png"
