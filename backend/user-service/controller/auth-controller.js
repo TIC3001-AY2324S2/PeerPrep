@@ -21,7 +21,13 @@ export async function handleLogin(req, res) {
       }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
-      return res.status(200).json({ message: "User logged in", accessToken });
+      return res.status(200).json({
+        message: "User logged in",
+        token: accessToken,
+        userInfo: {
+          username: user.username,
+        },
+      });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }

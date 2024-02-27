@@ -24,7 +24,7 @@ export function registerAccount(credentials) {
 export function loginAccount(credentials) {
     return axios
         .post(`${HOST}/api/auth/login`, {
-            username: credentials.username,
+            email: credentials.email,
             password: credentials.password,
             headers: {
                 Accept: CONTENT_TYPE_JSON,
@@ -40,7 +40,7 @@ export function loginAccount(credentials) {
 
 export function verifyToken(token) {
     return axios
-        .post(`${HOST}/api/auth/verify`, {
+        .get(`${HOST}/api/auth/verify`, {
             headers: {
                 Accept: CONTENT_TYPE_JSON,
                 authorization: token,
