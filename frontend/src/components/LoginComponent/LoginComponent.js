@@ -70,7 +70,7 @@ class LoginComponent extends React.Component {
                     });
                 } else {
                     loginAccount({
-                        username: this.state.username,
+                        email: this.state.email,
                         password: this.state.password,
                     }).then((res) => {
                         if (res.error) {
@@ -168,9 +168,9 @@ class LoginComponent extends React.Component {
             <>
                 {this.renderTextField(
                     true,
-                    'username',
-                    this.state.username,
-                    'Username',
+                    'email',
+                    this.state.email,
+                    'Email',
                 )}
                 {this.renderTextField(
                     true,

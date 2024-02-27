@@ -55,7 +55,7 @@ class BasePage extends React.Component {
                                     });
                                 }}
                             />
-                            <div style={{ marginLeft: '16px' }}>
+                            <div style={{ marginLeft: 'auto' }}>
                                 <Tooltip title="Account settings">
                                     <Button
                                         style={{ textTransform: 'none' }}
