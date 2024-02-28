@@ -23,7 +23,7 @@ class ErrorPage extends React.Component {
                                         An error has occured.
                                         <img
                                             draggable={false}
-                                            src="/static/404_1.png"
+                                            src="/static/peerprep_deco.png"
                                             className={'app-error'}
                                             alt=""
                                         />

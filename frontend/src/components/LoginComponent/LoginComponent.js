@@ -80,14 +80,14 @@ class LoginComponent extends React.Component {
                                 isButtonClicked: false,
                             });
                         } else {
-                            // Open snackbar to display login success
-                            showSuccessBar(`Successfully logged in to [${this.state.username}]!`);
                             localStorage.setItem('token', res.data.token);
                             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
                             this.props.setToken(res.data.token);
                             this.props.setIsVerifyDone(true);
                             this.props.navigate('/home');
                             this.props.setUserInfo(res.data.userInfo);
+                            // Open snackbar to display login success
+                            showSuccessBar(`Successfully logged in to [${res.data.userInfo.username}]!`);
                         }
                         this.props.setIsLoading(false);
                     });
@@ -141,7 +141,7 @@ class LoginComponent extends React.Component {
     ) => {
         return (
             <TextField
-                size="small"
+                size="medium"
                 className={
                     isStandard
                         ? 'standard-panel-text-field'
@@ -159,6 +159,7 @@ class LoginComponent extends React.Component {
                 helperText={
                     target === 'email' ? "We'll never share your email." : ''
                 }
+                required
             />
         );
     };
@@ -170,7 +171,7 @@ class LoginComponent extends React.Component {
                     true,
                     'email',
                     this.state.email,
-                    'Email',
+                    'Email Address',
                 )}
                 {this.renderTextField(
                     true,
@@ -183,27 +184,57 @@ class LoginComponent extends React.Component {
                 <div
                     style={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        alignItems: 'end',
+                        flexDirection: 'column',
                         margin: '0px 32px 0px 32px',
                     }}
                 >
                     <NavigateButton
-                        url="/register"
+                        url="/forgot"
                         disableRipple
                         style={{
                             backgroundColor: 'transparent',
-                            fontSize: '12px',
+                            color: 'grey',
+                            fontWeight: 'bold',
                         }}
-                        text="Need an account?"
+                        text="Forgot password?"
                     />
-                    <Button
-                        type="submit"
-                        disabled={this.state.isButtonClicked}
-                        className={'login-panel-main-button'}
-                        variant="contained"
+                    <div
+                        style={{
+                            marginTop: '32px',
+                            display: 'flex',
+                            width: '100%',
+                            flexDirection: 'row-reverse',
+                            justifyContent: 'space-between',
+                        }}
                     >
-                        Login
-                    </Button>
+                        <inline style={{ color: 'grey', display: 'flex', alignItems: 'center' }}>
+                            <inline>
+                                Don't have an account?
+                            </inline>
+                            <NavigateButton
+                                url="/register"
+                                disableRipple
+                                style={{
+                                    backgroundColor: 'transparent',
+                                }}
+                                text={
+                                <inline style={{ marginLeft: '4px', color: '#5541D7', fontWeight: 'bold' }}>
+                                    Sign up now
+                                </inline>
+                                }
+                            />
+                        </inline>
+                        <Button
+                            type="submit"
+                            size='large'
+                            disabled={this.state.isButtonClicked}
+                            className={'login-panel-main-button'}
+                            variant="contained"
+                        >
+                            Login
+                        </Button>
+                    </div>
                 </div>
             </>
         );
@@ -220,7 +251,7 @@ class LoginComponent extends React.Component {
                     true,
                     'username',
                     this.state.username,
-                    'Username',
+                    'Display Name',
                 )}
                 {this.renderTextField(
                     false,
@@ -251,23 +282,42 @@ class LoginComponent extends React.Component {
                         margin: '0px 32px 0px 32px',
                     }}
                 >
-                    <NavigateButton
-                        url="/login"
-                        disableRipple
+                    <div
                         style={{
-                            backgroundColor: 'transparent',
-                            fontSize: '12px',
+                            marginTop: '32px',
+                            display: 'flex',
+                            width: '100%',
+                            flexDirection: 'row-reverse',
+                            justifyContent: 'space-between',
                         }}
-                        text="Already have an account?"
-                    />
-                    <Button
-                        disabled={this.state.isButtonClicked}
-                        type="submit"
-                        className={'login-panel-main-button'}
-                        variant="contained"
                     >
-                        Register
-                    </Button>
+                        <inline style={{ color: 'grey', display: 'flex', alignItems: 'center' }}>
+                            <inline>
+                                Already have an account?
+                            </inline>
+                            <NavigateButton
+                                url="/login"
+                                disableRipple
+                                style={{
+                                    backgroundColor: 'transparent',
+                                }}
+                                text={
+                                <inline style={{ marginLeft: '4px', color: '#5541D7', fontWeight: 'bold' }}>
+                                    Login now
+                                </inline>
+                                }
+                            />
+                        </inline>
+                        <Button
+                            type="submit"
+                            size='large'
+                            disabled={this.state.isButtonClicked}
+                            className={'login-panel-main-button'}
+                            variant="contained"
+                        >
+                            Sign up
+                        </Button>
+                    </div>
                 </div>
             </>
         );
@@ -278,40 +328,56 @@ class LoginComponent extends React.Component {
             return <></>;
         }
         return (
-            <div className={'login-container'}>
-                <img
-                    draggable={false}
-                    src="/static/peerprep_logo.png"
-                    className={'main-logo'}
-                    alt=""
-                />
+            <div className={'login-container full-height'}>
                 <div
-                    className={`${
-                        this.props.isRegisterPage
-                            ? 'register-panel'
-                            : 'login-panel'
-                    } main-panel`}
+                    className='main-left-panel'
                 >
-                    <Typography className={'login-panel-main-title'}>
-                        {this.props.isRegisterPage
-                            ? 'Sign up with Peerprep'
-                            : 'Login with Peerprep'}
-                    </Typography>
-                    {this.state.errorMessage !== '' && (
-                        <Alert className="main-panel-error" severity="error">
-                            {this.state.errorMessage}
-                        </Alert>
-                    )}
-                    <form
-                        onSubmit={this.handleSubmit}
-                        className={'full-width-class'}
+                    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                        <img
+                            draggable={false}
+                            src="/static/peerprep_logo.png"
+                            className={'main-logo'}
+                            alt=""
+                        />
+                        <inline style={{ fontWeight: 'bold', marginTop: '16px', fontSize: '24px' }}>
+                            Elevate Interviews Together!
+                        </inline>
+                    </div>
+                    <img
+                        draggable={false}
+                        src="/static/peerprep_deco.png"
+                        className={'main-deco'}
+                        alt=""
+                    />
+                </div>
+                <div
+                    className='main-right-panel'
+                >
+                    <div
+                        className='sub-right-panel'
                     >
-                        <FormControl className={'full-width-class'}>
+                        <Typography className={'login-panel-main-title'}>
                             {this.props.isRegisterPage
-                                ? this.renderRegisterForm()
-                                : this.renderLoginForm()}
-                        </FormControl>
-                    </form>
+                                ? 'Sign up with Peer'
+                                : 'Login to Peer'}
+                                <inline style={{ color: '#5541D7' }}>prep</inline>
+                        </Typography>
+                        {this.state.errorMessage !== '' && (
+                            <Alert className="main-panel-error" severity="error">
+                                {this.state.errorMessage}
+                            </Alert>
+                        )}
+                        <form
+                            onSubmit={this.handleSubmit}
+                            className={'full-width-class'}
+                        >
+                            <FormControl className={'full-width-class'}>
+                                {this.props.isRegisterPage
+                                    ? this.renderRegisterForm()
+                                    : this.renderLoginForm()}
+                            </FormControl>
+                        </form>
+                    </div>
                 </div>
             </div>
         );

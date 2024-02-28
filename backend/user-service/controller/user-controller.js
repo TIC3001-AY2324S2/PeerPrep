@@ -21,7 +21,7 @@ export async function createUser(req, res) {
       if (resp.err) {
         return res.status(409).json({
           message:
-            "Could not create a new user! (Possibly Username or Email Already Exists!)",
+            "Could not create a new user! (Possibly Display Name or Email Already Exists!)",
         });
       } else {
         console.log(`Created new user ${username} successfully!`);
@@ -31,7 +31,7 @@ export async function createUser(req, res) {
       }
     } else {
       return res.status(400).json({
-        message: "Username and/or Email and/or Password are missing!",
+        message: "Display name and/or Email and/or Password are missing!",
       });
     }
   } catch (err) {
@@ -135,7 +135,7 @@ export async function updateUser(req, res) {
       }
     } else {
       return res.status(400).json({
-        message: "id and/or Username and/or Email and/or Password are missing!",
+        message: "id and/or Display name and/or Email and/or Password are missing!",
       });
     }
   } catch (err) {
