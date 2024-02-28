@@ -1,6 +1,12 @@
+import crypto from "crypto";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { ormFindUserByEmail } from "../model/user-orm.js";
+import { ormFindUserByEmail, ormUpdateUser } from "../model/user-orm.js";
+import { sendResetPasswordEmail } from "../nodemailer.js";
+
+function generateRandomPassword(length) {
+  return crypto.randomBytes(length).toString('hex').slice(0, length);
+}
 
 export async function handleLogin(req, res) {
   const { email, password } = req.body;
@@ -33,6 +39,41 @@ export async function handleLogin(req, res) {
     }
   } else {
     return res.status(400).json({ message: "Missing email and/or password" });
+  }
+}
+
+export async function handleReset(req, res) {
+  const { email } = req.body;
+  if (email) {
+    try {
+      const user = await ormFindUserByEmail(email);
+      if (!user) {
+        return res.status(401).json({ message: "Wrong email." });
+      }
+
+      const password = generateRandomPassword(10);
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(password, salt);
+      const update = await ormUpdateUser(user.id, user.username, email, hashedPassword);
+      if (!update) {
+        return res.status(500).json({
+          message: "Failed to reset password.",
+        });
+      }
+      const status = await sendResetPasswordEmail(email, password);
+      if (!status) {
+        return res.status(500).json({
+          message: "Failed to send reset password email.",
+        });
+      }
+      return res.status(200).json({
+        message: "Password reset successfully!",
+      });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  } else {
+    return res.status(400).json({ message: "Missing email." });
   }
 }
 

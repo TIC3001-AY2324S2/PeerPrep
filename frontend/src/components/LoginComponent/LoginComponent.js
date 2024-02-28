@@ -360,7 +360,7 @@ class LoginComponent extends React.Component {
                             {this.props.isRegisterPage
                                 ? 'Sign up with Peer'
                                 : 'Login to Peer'}
-                                <inline style={{ color: '#5541D7' }}>prep</inline>
+                                <inline style={{ color: '#5541D7' }}>Prep</inline>
                         </Typography>
                         {this.state.errorMessage !== '' && (
                             <Alert className="main-panel-error" severity="error">
