@@ -18,6 +18,7 @@
     "content-type": "^1.0.5",
     "cookie": "^0.5.0",
     "cookie-signature": "^1.0.6",
+    "cors": "^2.8.5",
     "debug": "^4.3.4",
     "define-data-property": "^1.1.4",
     "depd": "^2.0.0",
@@ -68,6 +69,8 @@
     "minimalistic-assert": "^1.0.1",
     "mongodb": "^6.3.0",
     "mongodb-connection-string-url": "^3.0.0",
+    "mongoose": "^8.2.0",
+    "morgan": "^1.10.0",
     "ms": "^2.1.2",
     "negotiator": "^0.6.3",
     "object-inspect": "^1.13.1",
@@ -102,6 +105,7 @@
     "whatwg-url": "^13.0.0",
     "yallist": "^4.0.0"
   },
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",

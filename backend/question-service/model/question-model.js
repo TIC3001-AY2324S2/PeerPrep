@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 let QuestionModelSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   id: {
-    type: Integer,
+    type: Number,
     required: true,
     primaryKey: true,
     autoIncrement: true,
@@ -31,4 +31,4 @@ let QuestionModelSchema = new Schema({
   },
 });
 
-export default mongoose.model("QuestionModel", UserModelSchema);
+export default mongoose.model("QuestionModel", QuestionModelSchema);
