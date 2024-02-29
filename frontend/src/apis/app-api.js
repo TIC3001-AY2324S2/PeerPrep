@@ -38,6 +38,22 @@ export function loginAccount(credentials) {
         }));
 }
 
+export function forgotPassword(email) {
+    return axios
+        .post(`${HOST}/api/auth/reset`, {
+            email,
+            headers: {
+                Accept: CONTENT_TYPE_JSON,
+            },
+        })
+        .then((resp) => ({ data: resp.data, error: false }))
+        .catch((err) => ({
+            data: err && err.response ? err.response.data : '',
+            error: true,
+            status: err && err.response ? err.response.status : '',
+        }));
+}
+
 export function verifyToken(token) {
     return axios
         .get(`${HOST}/api/auth/verify`, {

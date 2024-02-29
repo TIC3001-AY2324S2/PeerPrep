@@ -3,10 +3,14 @@ body {
 }
 
 .main-logo {
-    height: 96px;
+    width: 136px;
 }
 
-.app-main {
+.main-deco {
+    width: 350px;
+}
+
+.full-height {
     height: 100vh;
 }
 
@@ -95,4 +99,8 @@ textarea {
 
 ul {
     margin-top: 0;
+}
+
+.MuiButton-root {
+    text-transform: none !important;
 }

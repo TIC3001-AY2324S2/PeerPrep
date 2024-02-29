@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import React, { useEffect } from 'react';
 import './App.scss';
 import ErrorPage from './pages/error-page';
+import ForgotPage from './pages/forgot-page';
 import LoginPage from './pages/login-page';
 import { MainSelectors } from './state/selectors';
 import { MainActions } from './state/actions';
@@ -17,7 +18,8 @@ const App = (props) => {
     useEffect(() => {
         const isLoginPage =
             window.location.pathname === '/login' ||
-            window.location.pathname === 'register';
+            window.location.pathname === 'register' ||
+            window.location.pathname === '/forgot';
         let token = props.token;
         if (token) {
             if (isLoginPage) {
@@ -75,6 +77,11 @@ const App = (props) => {
                 path="/register"
                 exact
                 element={<LoginPage {...mainProps} isRegisterPage />}
+            />
+            <Route
+                path="/forgot"
+                exact
+                element={<ForgotPage {...mainProps} />}
             />
             <Route path="*" element={<ErrorPage {...mainProps} />} />
         </Routes>
