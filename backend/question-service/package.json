@@ -67,7 +67,7 @@
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
     "minimalistic-assert": "^1.0.1",
-    "mongodb": "^6.3.0",
+    "mongodb": "^6.4.0",
     "mongodb-connection-string-url": "^3.0.0",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0",

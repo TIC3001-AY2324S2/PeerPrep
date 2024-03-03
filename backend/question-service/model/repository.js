@@ -19,6 +19,9 @@ db.on("connected", () => console.log("MongoDB Connected!"));
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 export async function findAllQuestion() {
-    return QuestionModel.find();
-  }
-  
+  return QuestionModel.find();
+}
+
+export async function findQuestionByID(id) {
+  return QuestionModel.findOne({ id: id });
+}
