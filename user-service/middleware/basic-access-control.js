@@ -38,9 +38,9 @@ export function verifyEmail(req, res, next) {
     return next();
   }
 
-  const userEmailFromBody = req.body.email;
+  const userEmail = req.body.email || req.query.email;
   const userEmailFromToken = req.user.email;
-  if (userEmailFromBody === userEmailFromToken) {
+  if (userEmail === userEmailFromToken) {
     return next();
   }
 
