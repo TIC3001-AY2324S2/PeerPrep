@@ -1,6 +1,7 @@
 import {
   ormFindAllQuestion as _findAllQuestion,
   ormFindQuestionByID as _findQuestionByID,
+  ormCreateQuestion as _createQuestion,
 } from "../model/question-orm.js";
 
 
@@ -42,5 +43,38 @@ export async function getQuestionById(req, res) {
       message: `Questions loaded!`,
       question: response,
     });
+  }
+}
+
+export async function createQuestion(req, res) {
+  try {
+    
+    const { title, description, category, complexity } = req.body;
+    const newQuestion = { title, description, category, complexity }
+    if (newQuestion) {
+      console.log(`Adding new question: ${title}`);
+      const resp = await _createQuestion(title, description, category, complexity);
+      console.log(resp);
+      if (resp.err) {
+        console.log(resp.err.message);
+        return res.status(409).json({
+          message:
+            "Could not create new question. Title already exists in repository!",
+        });
+      } else {
+        console.log(`New question: ${title} added successfully!`);
+        return res
+          .status(201)
+          .json({ message: `New question: ${title} added successfully!` });
+      }
+    } else {
+      return res.status(400).json({
+        message: "Incomplete Question Data! Please provide all required fields!",
+      });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Database failure when creating new question!" });
   }
 }

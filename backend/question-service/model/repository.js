@@ -25,3 +25,13 @@ export async function findAllQuestion() {
 export async function findQuestionByID(id) {
   return QuestionModel.findOne({ id: id });
 }
+
+export async function createQuestion({ title, description, category, complexity }) {
+  const lastQuestion = await QuestionModel.findOne().sort('-id');
+  const highestId = lastQuestion ? lastQuestion.id : 0;
+  const newQuestion = new QuestionModel({
+    _id: new mongoose.Types.ObjectId(),
+    id: highestId + 1, title: title, description: description, category: category, complexity: complexity
+  });
+  return await newQuestion.save();
+}

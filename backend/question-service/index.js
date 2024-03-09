@@ -9,7 +9,7 @@ const app = express()
 app.use(morgan("combined"))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors()) // config cors so that front-end can use
+app.use(cors())
 
 app.use(questionRoutes);
 

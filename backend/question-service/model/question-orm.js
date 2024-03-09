@@ -1,7 +1,8 @@
 //for db itneraction
 import {
     findQuestionByID,
-    findAllQuestion
+    findAllQuestion,
+    createQuestion,
   } from "./repository.js";
 
 export async function ormFindAllQuestion() {
@@ -32,6 +33,16 @@ export async function ormFindQuestionByID(id) {
     return null;
   } catch (err) {
     console.log("ERROR: Could not load question from repository!");
+    return { err };
+  }
+}
+
+export async function ormCreateQuestion(title, description, category, complexity) {
+  try {
+    const newQuestion = await createQuestion({ title, description, category, complexity });
+    return true;
+  } catch (err) {
+    console.log("ERROR: Could create question in repository!");
     return { err };
   }
 }

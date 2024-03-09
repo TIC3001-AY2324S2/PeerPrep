@@ -8,7 +8,6 @@ let QuestionModelSchema = new Schema({
     type: Number,
     required: true,
     primaryKey: true,
-    autoIncrement: true,
     allowNull: false,
   },
   title: {
