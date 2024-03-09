@@ -4,6 +4,7 @@ import {
     findAllQuestion,
     findOneQuestionByComplexity,
     createQuestion,
+    deleteQuestion,
   } from "./repository.js";
 
 export async function ormFindAllQuestion() {
@@ -60,6 +61,22 @@ export async function ormCreateQuestion(title, description, category, complexity
     return true;
   } catch (err) {
     console.log("ERROR: Could create question in repository!");
+    return { err };
+  }
+}
+
+export async function ormDeleteQuestion(id) {
+  try {
+    const result = await deleteQuestion(id);
+
+    // Checking if User existed
+    if (result.deletedCount === 0) {
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.log("ERROR: Could not delete question");
     return { err };
   }
 }

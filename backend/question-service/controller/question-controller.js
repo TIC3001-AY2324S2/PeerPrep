@@ -3,6 +3,7 @@ import {
   ormFindQuestionByID as _findQuestionByID,
   ormFindOneQuestionByComplexity as _findOneQuestionByComplexity,
   ormCreateQuestion as _createQuestion,
+  ormDeleteQuestion as _deleteQuestion,
 } from "../model/question-orm.js";
 
 
@@ -70,7 +71,6 @@ export async function getOneQuestionByComplexity(req, res) {
 
 export async function createQuestion(req, res) {
   try {
-    
     const { title, description, category, complexity } = req.body;
     const newQuestion = { title, description, category, complexity }
     if (newQuestion) {
@@ -98,5 +98,37 @@ export async function createQuestion(req, res) {
     return res
       .status(500)
       .json({ message: "Database failure when creating new question!" });
+  }
+}
+
+export async function deleteQuestionById(req, res) {
+  try {
+    const id = req.params.id;
+    if (id) {
+      console.log(`DELETE USER: question Obtained: ${id}`);
+      const response = await _deleteQuestion(id);
+      console.log(response);
+      if (response.err) {
+        return res.status(400).json({ message: "Could not delete the question!" });
+      } else if (!response) {
+        console.log(`Question ${id} not found!`);
+        return res
+          .status(404)
+          .json({ message: `Question ${id} not found!` });
+      } else {
+        console.log(`Deleted Question ${id} successfully!`);
+        return res
+          .status(200)
+          .json({ message: `Deleted Question ${id} successfully!` });
+      }
+    } else {
+      return res.status(400).json({
+        message: "Question ID missing!",
+      });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Database failure when deleting question!" });
   }
 }

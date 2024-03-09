@@ -23,7 +23,11 @@ export async function findAllQuestion() {
 }
 
 export async function findQuestionByID(id) {
-  return QuestionModel.findOne({ id: id });
+  const foundQuestion = await QuestionModel.findOne({ id: id })
+  if(foundQuestion) {
+    return foundQuestion;
+  }
+  return "";
 }
 
 export async function findOneQuestionByComplexity(complexity) {
@@ -41,4 +45,8 @@ export async function createQuestion({ title, description, category, complexity 
     id: highestId + 1, title: title, description: description, category: category, complexity: complexity
   });
   return await newQuestion.save();
+}
+
+export async function deleteQuestion(id) {
+  return await QuestionModel.deleteOne({ id: id });
 }
