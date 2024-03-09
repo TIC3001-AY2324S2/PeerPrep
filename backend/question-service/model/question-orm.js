@@ -2,6 +2,7 @@
 import {
     findQuestionByID,
     findAllQuestion,
+    findOneQuestionByComplexity,
     createQuestion,
   } from "./repository.js";
 
@@ -24,6 +25,22 @@ export async function ormFindAllQuestion() {
 export async function ormFindQuestionByID(id) {
   try {
     const result = await findQuestionByID(id);
+
+    // Checking if question exist
+    if (result.length !== 0) {
+      return result;
+    }
+
+    return null;
+  } catch (err) {
+    console.log("ERROR: Could not load question from repository!");
+    return { err };
+  }
+}
+
+export async function ormFindOneQuestionByComplexity(complexity) {
+  try {
+    const result = await findOneQuestionByComplexity(complexity);
 
     // Checking if question exist
     if (result.length !== 0) {

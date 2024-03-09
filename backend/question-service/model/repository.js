@@ -26,6 +26,13 @@ export async function findQuestionByID(id) {
   return QuestionModel.findOne({ id: id });
 }
 
+export async function findOneQuestionByComplexity(complexity) {
+  return QuestionModel.aggregate([
+    { $match: { complexity: complexity } },
+    { $sample: { size: 1 } }
+  ]);
+}
+
 export async function createQuestion({ title, description, category, complexity }) {
   const lastQuestion = await QuestionModel.findOne().sort('-id');
   const highestId = lastQuestion ? lastQuestion.id : 0;

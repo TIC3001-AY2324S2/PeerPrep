@@ -1,6 +1,7 @@
 import {
   ormFindAllQuestion as _findAllQuestion,
   ormFindQuestionByID as _findQuestionByID,
+  ormFindOneQuestionByComplexity as _findOneQuestionByComplexity,
   ormCreateQuestion as _createQuestion,
 } from "../model/question-orm.js";
 
@@ -30,6 +31,27 @@ export async function getQuestionById(req, res) {
   console.log(`GET QUESTION BY ID: ${id}`);
 
   const response = await _findQuestionByID(id);
+
+  console.log(response);
+
+  if (response === null) {
+    return res.status(404).json({ message: `Question Not Found` });
+  } else if (response.err) {
+    return res.status(400).json({ message: "Error With Question Repository" });
+  } else {
+    console.log(`Questions loaded!`);
+    return res.status(200).json({
+      message: `Questions loaded!`,
+      question: response,
+    });
+  }
+}
+
+export async function getOneQuestionByComplexity(req, res) {
+  const complexity = req.params.complexity;
+  console.log(`GET A QUESITON OF COMPLEXTY : ${complexity}`);
+
+  const response = await _findOneQuestionByComplexity(complexity);
 
   console.log(response);
 
