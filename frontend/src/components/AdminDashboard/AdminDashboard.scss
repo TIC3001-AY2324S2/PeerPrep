@@ -1,0 +1,142 @@
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  width: 80%;
+  border-radius: 10px;
+}
+
+.section-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.section-1 h2 {
+  margin: 0;
+}
+
+.add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1.5px solid #DBD7F4;
+  background: none;
+  padding: 5px 15px;
+  text-decoration: none;
+}
+
+.section-1 button:hover {
+  background-color: #DBD7F4;
+  color: #5541D7;
+}
+
+
+.add-icon {
+  font-size: 18px;
+  front-weight: 600;
+  color: #5541D7;
+  margin-right: 7px;
+}
+
+.section-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+}
+
+th, td {
+  border-top: 1px solid #DBD7F4;
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background-color: #DBD7F4;
+  color: black;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+tr:hover {
+  background-color: #F7F7FC;
+}
+
+tr.selected {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.question-id, .question-difficulty, .question-select, .question-edit {
+  text-align: center;
+}
+
+.question-id, .question-difficulty, .question-select, .question-category, .question-title {
+  text-transform: capitalize;
+}
+
+.question-edit button {
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 4px 10px;
+  color: #9A9AB0;
+  background: none;
+  border: none;
+}
+
+.question-edit button:hover {
+  color: #5541D7;
+}
+
+.question-description {
+  color: #92929D;
+  background: #F7F7FC;
+}
+
+.question-description-inner {
+  padding: 1px 20px;
+  margin: 0 20px;
+}
+
+.question-example {
+  color: #9A9AB0;
+  background: white;
+  padding: 10px 20px 5px 20px;
+  border-radius: 10px;
+  margin: 0 20px 20px 20px;
+}
+
+h4 {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.question-select {
+  font-size: 18px;
+  color: #DBD7F4;
+}

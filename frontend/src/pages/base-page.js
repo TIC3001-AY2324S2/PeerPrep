@@ -16,7 +16,7 @@ import { MainActions } from '../state/actions';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
+import SettingsIcon from '@mui/icons-material/Settings';
 class BasePage extends React.Component {
     constructor(props) {
         super(props);
@@ -31,6 +31,9 @@ class BasePage extends React.Component {
         localStorage.removeItem('token');
         this.props.navigate('/login');
     };
+    goToAdminDashboard = () => {
+        this.props.navigate('/admin-dashboard');
+    }
 
     render() {
         return (
@@ -76,10 +79,10 @@ class BasePage extends React.Component {
                                         >
                                             M
                                         </Avatar>
-                                        <span style={{ marginLeft: '8px', marginRight: '8px    ' }}>
+                                        <span style={{ marginLeft: '8px', marginRight: '8px', color: '#5541D7' }}>
                                             {this.props.userInfo?.username ? this.props.userInfo.username : 'Username' }
                                         </span>
-                                        <ExpandMoreIcon style={{ marginRight: '8px' }} />
+                                        <ExpandMoreIcon style={{ marginRight: '8px', color: '#5541D7' }} />
                                     </Button>
                                 </Tooltip>
                                 <Menu
@@ -130,9 +133,13 @@ class BasePage extends React.Component {
                                     >
                                         <AccountBoxIcon style={{ marginRight: '8px' }} /> Profile
                                     </MenuItem>
+                                    <MenuItem onClick={() => this.goToAdminDashboard()}>
+                                        <SettingsIcon style={{ marginRight: '8px' }} /> Admin Dashboard
+                                    </MenuItem>
                                     <MenuItem onClick={() => this.logoutUser()}>
                                         <LogoutIcon style={{ marginRight: '8px' }} /> Logout
                                     </MenuItem>
+
                                 </Menu>
                             </div>
                         </Toolbar>
