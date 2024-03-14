@@ -11,6 +11,6 @@ RUN true \
     && userdel -r node \
     # Add a non-root user.
     && groupadd -g "${USER_GID}" "${USERNAME}" \
-    && useradd -s /bin/bash -u "${USER_UID}" -g "${USER_GID}" -m "${USERNAME}"
+    && useradd -s /bin/bash -u "${USER_UID}" -g "${USER_GID}" -m "${USERNAME}" -l
 
 USER ${USERNAME}
