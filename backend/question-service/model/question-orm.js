@@ -5,6 +5,7 @@ import {
     findOneQuestionByComplexity,
     createQuestion,
     deleteQuestion,
+    updateQuestion
   } from "./repository.js";
 
 export async function ormFindAllQuestion() {
@@ -55,9 +56,9 @@ export async function ormFindOneQuestionByComplexity(complexity) {
   }
 }
 
-export async function ormCreateQuestion(title, description, category, complexity) {
+export async function ormCreateQuestion(title, description, category, complexity, testCase) {
   try {
-    const newQuestion = await createQuestion({ title, description, category, complexity });
+    await createQuestion({ title, description, category, complexity, testCase });
     return true;
   } catch (err) {
     console.log("ERROR: Could create question in repository!");
@@ -77,6 +78,16 @@ export async function ormDeleteQuestion(id) {
     return true;
   } catch (err) {
     console.log("ERROR: Could not delete question");
+    return { err };
+  }
+}
+
+export async function ormUpdateQuestion(id, questionInfo){
+  try {
+    const result = await updateQuestion (id, questionInfo);
+    return result;
+  } catch (err) {
+    console.log("ERROR: Could not update question");
     return { err };
   }
 }

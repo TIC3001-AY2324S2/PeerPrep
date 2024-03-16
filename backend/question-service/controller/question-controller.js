@@ -4,6 +4,7 @@ import {
   ormFindOneQuestionByComplexity as _findOneQuestionByComplexity,
   ormCreateQuestion as _createQuestion,
   ormDeleteQuestion as _deleteQuestion,
+  ormUpdateQuestion as _updateQuestion,
 } from "../model/question-orm.js";
 
 
@@ -71,11 +72,11 @@ export async function getOneQuestionByComplexity(req, res) {
 
 export async function createQuestion(req, res) {
   try {
-    const { title, description, category, complexity } = req.body;
-    const newQuestion = { title, description, category, complexity }
+    const { title, description, category, complexity, testCase } = req.body;
+    const newQuestion = { title, description, category, complexity, testCase}
     if (newQuestion) {
       console.log(`Adding new question: ${title}`);
-      const resp = await _createQuestion(title, description, category, complexity);
+      const resp = await _createQuestion(title, description, category, complexity, testCase);
       console.log(resp);
       if (resp.err) {
         console.log(resp.err.message);
@@ -130,5 +131,52 @@ export async function deleteQuestionById(req, res) {
     return res
       .status(500)
       .json({ message: "Database failure when deleting question!" });
+  }
+}
+
+export async function updateQuestionById(req, res) {
+  try{
+    const id = req.params.id;
+    const { title, description, category, complexity, testCase } = req.body;
+    const questionInfo = { title, description, category, complexity, testCase}
+    if (questionInfo){
+      console.log(`Updating Question: ${id}`);
+      const resp = await _updateQuestion(id, questionInfo); 
+      console.log("this is resp");
+      console.log(resp);
+      if (resp.err) {
+        console.log (resp.err.message);
+        return res
+          .status(409)
+          .json({ message: "Could not update question. Title already exists in repository!" });
+      } else {
+        console.log("match " + resp.matchedCount, "modified " + resp.modifiedCount);
+        if(resp.matchedCount === 0) {
+          console.log(`Question: ${id} not found!`);
+          return res
+            .status(404)
+            .json({ message: `Question: ${id} not found!` });
+        } else if (resp.modifiedCount === 0) {
+          console.log(`Question: ${id} not modified!`);
+          return res
+            .status(304)
+            .json({ message: `Question: ${id} not modified!` });
+        } else {
+        console.log(`Question: ${id} updated successfully!`);
+        return res
+          .status(200)
+          .json({ message: `Question: ${id} updated successfully!` });
+        }
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Incomplete Question Data! Please provide all required fields!"});
+    }
+
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Database failure when updating question!" });
   }
 }

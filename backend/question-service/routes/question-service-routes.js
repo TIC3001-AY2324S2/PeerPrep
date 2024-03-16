@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 // import { verifyAccessToken, verifyIsAdmin } from "../middleware/basic-access-control.js";
-import { getAllQuestion, getQuestionById, getOneQuestionByComplexity, createQuestion, deleteQuestionById } from "../controller/question-controller.js";
+import { getAllQuestion, getQuestionById, getOneQuestionByComplexity, createQuestion, deleteQuestionById, updateQuestionById } from "../controller/question-controller.js";
 
 //return all question given active login + admin user
 //router.get('/api/question/all', verifyAccessToken, verifyIsAdmin, getAllQuestion);
@@ -18,5 +18,8 @@ router.post('/api/question/create', createQuestion);
 
 //delete a single question by id
 router.delete('/api/question/:id', deleteQuestionById);
+
+//update a single question by id
+router.patch('/api/question/:id', updateQuestionById);
 
 export default router;

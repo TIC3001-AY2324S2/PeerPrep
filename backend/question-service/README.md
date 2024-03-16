@@ -147,7 +147,7 @@
 | 200 (OK)                    | Question Deleted Successfully                           |
 | 400 (Bad Request)           | Missing ID in request body                              |
 | 401 (Unauthorized)          | Access Denied Due to Missing/Invalid/Expired JWT        |
-| 403 (Forbidden)             | Access Denied for Non-admin Users Deleting Others' Data |
+| 403 (Forbidden)             | Access Denied for Non-admin Users Deleting Question     |
 | 404 (Not Found)             | No Question Found With Given ID                         |
 | 500 (Internal Server Error) | Database or Server Error                                |
 
@@ -195,9 +195,10 @@
 | Response Code               | Result                                                  |
 | --------------------------- | ------------------------------------------------------- |
 | 200 (OK)                    | Question Updated Successfully                           |
+| 304 (Not Modified)          | Question is not modified                                |
 | 400 (Bad Request)           | Missing ID in request body                              |
 | 401 (Unauthorized)          | Access Denied Due to Missing/Invalid/Expired JWT        |
-| 403 (Forbidden)             | Access Denied for Non-admin Users Deleting Others' Data |
+| 403 (Forbidden)             | Access Denied for Non-admin Users Editing Question      |
 | 404 (Not Found)             | No Question Found With Given ID                         |
 | 409 (Conflict)              | Duplicate Data Encountered                              |
 | 500 (Internal Server Error) | Database or Server Error                                |

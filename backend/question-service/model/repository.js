@@ -37,16 +37,26 @@ export async function findOneQuestionByComplexity(complexity) {
   ]);
 }
 
-export async function createQuestion({ title, description, category, complexity }) {
+export async function createQuestion({ title, description, category, complexity, testCase }) {
   const lastQuestion = await QuestionModel.findOne().sort('-id');
   const highestId = lastQuestion ? lastQuestion.id : 0;
   const newQuestion = new QuestionModel({
     _id: new mongoose.Types.ObjectId(),
-    id: highestId + 1, title: title, description: description, category: category, complexity: complexity
+    id: highestId + 1, title: title, description: description, category: category, complexity: complexity, testCase: testCase
   });
   return await newQuestion.save();
 }
 
 export async function deleteQuestion(id) {
-  return await QuestionModel.deleteOne({ id: id });
+  const deletedQuestion = await QuestionModel.deleteOne({ id: id });
+  // Update all questions with id greater than the deleted question
+  await QuestionModel.updateMany({ id: { $gt: id } }, { $inc: { id: -1 } });
+  return deletedQuestion;
+}
+
+export async function updateQuestion(id, { title, description, category, complexity, testCase }) {
+  return await QuestionModel.updateOne(
+    { id: id },
+    { title: title, description: description, category: category, complexity: complexity, testCase: testCase }
+  );
 }
