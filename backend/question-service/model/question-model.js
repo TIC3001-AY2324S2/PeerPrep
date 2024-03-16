@@ -20,7 +20,7 @@ let QuestionModelSchema = new Schema({
     required: true,
   },
   category: {
-    type: String,
+    type: Array,
     require: true,
   },
   complexity: {
@@ -28,6 +28,11 @@ let QuestionModelSchema = new Schema({
     enum: ['Easy', 'Medium', 'Hard'],
     required: true,
   },
+  testCase: {
+    type: Array,
+    required: true,
+  },
+
 });
 
 export default mongoose.model("QuestionModel", QuestionModelSchema, "question_repo");
