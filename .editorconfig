@@ -11,6 +11,9 @@ trim_trailing_whitespace = true
 [*.md]
 indent_size = 2
 
+[.prettierrc]
+indent_size = 2
+
 [*.{json,yml,cjs}]
 indent_size = 2
 
