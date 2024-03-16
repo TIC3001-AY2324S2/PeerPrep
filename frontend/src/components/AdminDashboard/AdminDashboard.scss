@@ -39,22 +39,30 @@ h1 {
   text-decoration: none;
 }
 
+.section-1 a {
+  text-decoration: none;
+}
+
 .section-1 button:hover {
   background-color: #DBD7F4;
   color: #5541D7;
 }
-
 
 .add-icon {
   font-size: 18px;
   front-weight: 600;
   color: #5541D7;
   margin-right: 7px;
+
+}
+
+.add-icon:hover {
+  transform: rotate(-180deg);
 }
 
 .section-2 {
-  display: flex;
-  justify-content: space-between;
+  //display: flex;
+  //justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
@@ -86,10 +94,6 @@ tr:hover {
   background-color: #F7F7FC;
 }
 
-tr.selected {
-  background-color: #4CAF50;
-  color: white;
-}
 
 .question-id, .question-difficulty, .question-select, .question-edit {
   text-align: center;
@@ -136,7 +140,80 @@ h4 {
   margin-top: 5px;
 }
 
-.question-select {
+.question-delete button {
   font-size: 18px;
-  color: #DBD7F4;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 4px 10px;
+  color: #9A9AB0;
+  background: none;
+  border: none;
+}
+
+.question-delete button:hover {
+  color: #5541D7;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}
+
+.pagination button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.pagination button:hover {
+  color: #000000;
+  background-color: #DBD7F4;
+  border: 1px solid #DBD7F4;
+}
+
+
+.pagination-button {
+  color: #9A9AB0;
+  border: 1px solid #DBD7F4;
+  background: none;
+}
+
+.pagination-button-active {
+  background-color: #5541D7;
+  color: white;
+  border: 1px solid #5541D7;
+}
+
+.support-btn {
+  font-size: 20px;
+  background-color: white;
+  color: #9A9AB0;
+  border: none;
+}
+
+.pagination span {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  margin: 5px;
+  color: #9A9AB0;
+}
+
+.Modal {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 1000;
 }

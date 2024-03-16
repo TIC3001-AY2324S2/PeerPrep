@@ -1,127 +1,100 @@
 import './AdminDashboard.scss'
-import {useState} from "react";
-import {Link} from 'react-router-dom';
+import {useEffect, useState} from "react";
 import {IoMdAdd} from "react-icons/io";
 import {FiEdit3} from "react-icons/fi";
-import {MdCheckBoxOutlineBlank} from "react-icons/md";
+import {IoTrash} from "react-icons/io5";
+import {deleteQuestion, getQuestions} from "../../apis/crud-question";
+import Modal from 'react-modal';
+import EditQuestion from "../EditQuestion/EditQuestion";
+import {MdOutlineArrowForwardIos} from "react-icons/md";
+import {MdOutlineArrowBackIosNew} from "react-icons/md";
 
 export default function AdminDashboard(props) {
 
+    const size = 10;
 
-    const questions = [
-        {
-            "id": 1,
-            "title": "Add Two Numbers",
-            "description": "You are given two non-empty linked lists representing two non-negative integers. The" +
-                " digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
-            "testCases": [
-                {
-                    "input": [2, 4, 3],
-                    "result": [5, 6, 4]
-                },
-                {
-                    "input": [0],
-                    "result": [0]
-                },
-            ],
-            "category": ["linked list"],
-            "difficulty": "medium"
-        },
+    const [questions, setQuestions] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [loading, setLoading] = useState(true);
 
-        {
-            "id": 2,
-            "title": "Two Sum",
-            "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
-            "testCases": [
-                {
-                    "input": [[2, 7, 11, 15], 9],
-                    "result": [0, 1]
-                },
-                {
-                    "input": [[3, 2, 4], 6],
-                    "result": [1, 2]
-                },
-                {
-                    "input": [[3, 3], 6],
-                    "result": [0, 1]
+    const refreshQuestions = (page, size) => {
+        try {
+            setLoading(true);
+            console.log("refreshQuestions", page, size)
+            getQuestions(page, size).then((response) => {
+                console.log("response", response)
+                if (response.error) {
+                    console.error('Failed to fetch questions:', response.data);
+                    setLoading(false);
+                    return;
                 }
-            ],
-            "category": ["array"],
-            "difficulty": "easy"
-        },
 
-        {
-            "id": 3,
-            "title": "Longest Substring Without Repeating Characters",
-            "description": "Given a string s, find the length of the longest substring without repeating characters.",
-            "testCases": [
-                {
-                    "input": "abcabcbb",
-                    "result": 3
-                },
-                {
-                    "input": "bbbbb",
-                    "result": 1
-                },
-
-            ],
-            "category": ["string"],
-            "difficulty": "medium"
-        },
-
-        {
-            "id": 4,
-            "title": "Median of Two Sorted Arrays",
-            "description": "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.",
-            "testCases": [
-                {
-                    "input": [[1, 3], [2]],
-                    "result": 2.0
-                },
-                {
-                    "input": [[0, 0], [0, 0]],
-                    "result": 0.0
-                },
-                {
-                    "input": [[], [1]],
-                    "result": 1.0
-                }
-            ],
-            "category": ["array"],
-            "difficulty": "hard"
-        },
-
-        {
-            "id": 5,
-            "title": "Longest Palindromic Substring",
-            "description": "Given a string s, return the longest palindromic substring in s.",
-            "testCases": [
-                {
-                    "input": "babad",
-                    "result": "bab"
-                },
-                {
-                    "input": "cbbd",
-                    "result": "bb"
-                },
-                {
-                    "input": "a",
-                    "result": "a"
-                }
-            ],
-            "category": ["string"],
-            "difficulty": "medium"
+                setQuestions(response.data.questions);
+                setTotalPages(response.data.totalPages);
+                setLoading(false);
+            });
+        } catch (error) {
+            console.error('Failed to fetch questions:', error);
+            setLoading(false);
         }
-    ]
+    };
+
+    useEffect(() => {
+        refreshQuestions(page, size);
+    }, [page, size]);
+
+    const handleFirstPage = () => {
+        setPage(1);
+    };
+
+    const handlePrevPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+        }
+    };
+
+    const handleLastPage = () => {
+        setPage(totalPages);
+    };
 
     const [currentSelectId, setCurrentSelectId] = useState(-1);
 
     const goToEditQuestion = (id) => () => {
-        props.navigate(`/questions/edit/${id}`)
+        // props.navigate(`/questions/edit/${id}`)
+        openModal(id)
     }
-    const goToAddQuestion = () => {
-        props.navigate(`/questions/add-new`)
+    const callDeleteQuestion = (id) => () => {
+        // show confirmation dialog
+        if (!window.confirm('Are you sure you want to delete this question?')) {
+            return;
+        }
+        console.log("callDeleteQuestion", id)
+        deleteQuestion(id).then((response) => {
+            if (response.error) {
+                console.error('Failed to delete question:', response.data);
+                return;
+            }
+            refreshQuestions(page, size);
+        });
     }
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editQuestionId, setEditQuestionId] = useState(null);
+    const openModal = (id) => {
+        setEditQuestionId(id);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
 
     return (
         <>
@@ -129,38 +102,47 @@ export default function AdminDashboard(props) {
             <div className="container">
                 <div className="section-1">
                     <h2>Question repository</h2>
-                    <Link to="/questions/edit/new">
-                        <button className="add-button"><IoMdAdd className="add-icon"/>Add</button>
-                    </Link>
+                    <button className="add-button"
+                            onClick={() => openModal(null)}
+                    ><IoMdAdd className="add-icon"/>Add
+                    </button>
                 </div>
+
                 <div className="section-2">
                     <table>
                         <tr>
-                            <th></th>
+
                             <th>ID</th>
                             <th>Title</th>
                             <th>Category</th>
                             <th>Difficulty</th>
                             <th></th>
+                            <th></th>
                         </tr>
                         {questions.map((question) => (
                             <>
-                                <tr onClick={() => {
-                                    // if the question is already selected, unselect it
-                                    if (currentSelectId === question.id) {
-                                        setCurrentSelectId(-1)
-                                        return
-                                    }
-                                    // if the question is not selected, select it
-                                    setCurrentSelectId(question.id)
-                                }}>
-                                    <td className={'question-select'}><MdCheckBoxOutlineBlank/></td>
+                                <tr>
                                     <td className={'question-id'}>#{question.id}</td>
-                                    <td className={'question-title'}>{question.title}</td>
+                                    <td className={'question-title'}
+                                        onClick={() => {
+                                            // if the question is already selected, unselect it
+                                            if (currentSelectId === question.id) {
+                                                setCurrentSelectId(-1)
+                                                return
+                                            }
+                                            // if the question is not selected, select it
+                                            setCurrentSelectId(question.id)
+                                        }}
+                                    >{question.title}</td>
                                     <td className={'question-category'}>{question.category.join(', ')}</td>
                                     <td className={'question-difficulty'}>{question.difficulty}</td>
                                     <td className={'question-edit'}>
                                         <button onClick={goToEditQuestion(question.id)}><FiEdit3/></button>
+                                    </td>
+                                    <td className={'question-delete'}>
+                                        <button onClick={callDeleteQuestion(question.id)}>
+                                            <IoTrash/>
+                                        </button>
                                     </td>
                                 </tr>
                                 {currentSelectId === question.id && (
@@ -182,8 +164,6 @@ export default function AdminDashboard(props) {
                                                         </ol>
                                                     </div>
                                                 ))}
-
-
                                             </div>
                                         </td>
                                     </tr>
@@ -191,8 +171,52 @@ export default function AdminDashboard(props) {
                                 }</>
                         ))}
                     </table>
+
+                    <div className={'pagination'}>
+                        {/*<button className={'support-btn'} onClick={handleFirstPage}><MdOutlineArrowBackIosNew /></button>*/}
+                        <button className={'support-btn'} onClick={handlePrevPage}><MdOutlineArrowBackIosNew/></button>
+                        {/*<button>{page}</button>*/}
+                        {(page < 5 || totalPages <= 5) ?
+                            Array.from({length: 5}, (_, i) => i + 1).map(pageNumber => (
+                                <button
+                                    key={pageNumber}
+                                    onClick={() => setPage(pageNumber)}
+                                    className={pageNumber === page ? 'pagination-button-active' : 'pagination-button'}
+                                >
+                                    {pageNumber}
+                                </button>
+                            ))
+                            :
+                            <>
+                                {page > 5  && <span>...</span>}
+                                {Array.from({length: 5}, (_, i) => page - 4 + i)
+                                    .filter(pageNumber => pageNumber >= 1 && pageNumber <= totalPages)
+                                    .map(pageNumber => (
+                                        <button
+                                            key={pageNumber}
+                                            onClick={() => setPage(pageNumber)}
+                                            className={pageNumber === page ? 'pagination-button-active' : 'pagination-button'}
+                                        >
+                                            {pageNumber}
+                                        </button>
+                                    ))
+                                }
+                                {page < totalPages  && <span>...</span>}
+                            </>
+                        }
+                        <button className={'support-btn'} onClick={handleNextPage}><MdOutlineArrowForwardIos/></button>
+                        {/*<button className={'support-btn'} onClick={handleLastPage}><MdOutlineArrowForwardIos /></button>*/}
+                    </div>
                 </div>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Edit Question"
+                className="Modal"
+            >
+                <EditQuestion id={editQuestionId} closeModal={closeModal}/>
+            </Modal>
         </>
     )
 }

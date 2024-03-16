@@ -26,14 +26,16 @@ class BasePage extends React.Component {
         };
     }
 
+
+    goToAdminDashboard = () => {
+        this.props.navigate('/admin-dashboard');
+    }
     logoutUser = () => {
         this.props.setToken(null);
         localStorage.removeItem('token');
         this.props.navigate('/login');
     };
-    goToAdminDashboard = () => {
-        this.props.navigate('/admin-dashboard');
-    }
+
 
     render() {
         return (
@@ -92,33 +94,33 @@ class BasePage extends React.Component {
                                     onClose={() => { this.setState({ menuAnchorElement: null })}}
                                     onClick={() => { this.setState({ menuAnchorElement: null })}}
                                     PaperProps={{
-                                    elevation: 0,
-                                    sx: {
-                                        overflow: 'visible',
-                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                        mt: 1.5,
-                                        '& .MuiAvatar-root': {
-                                        width: 32,
-                                        height: 32,
-                                        ml: -0.5,
-                                        mr: 1,
+                                        elevation: 0,
+                                        sx: {
+                                            overflow: 'visible',
+                                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                            mt: 1.5,
+                                            '& .MuiAvatar-root': {
+                                                width: 32,
+                                                height: 32,
+                                                ml: -0.5,
+                                                mr: 1,
+                                            },
+                                            '&:before': {
+                                                content: '""',
+                                                display: 'block',
+                                                position: 'absolute',
+                                                top: 0,
+                                                right: 14,
+                                                width: 10,
+                                                height: 10,
+                                                bgcolor: 'background.paper',
+                                                transform: 'translateY(-50%) rotate(45deg)',
+                                                zIndex: 0,
+                                            },
                                         },
-                                        '&:before': {
-                                        content: '""',
-                                        display: 'block',
-                                        position: 'absolute',
-                                        top: 0,
-                                        right: 14,
-                                        width: 10,
-                                        height: 10,
-                                        bgcolor: 'background.paper',
-                                        transform: 'translateY(-50%) rotate(45deg)',
-                                        zIndex: 0,
+                                        style: {
+                                            width: '220px',
                                         },
-                                    },
-                                    style: {
-                                      width: '220px',
-                                    },
                                     }}
                                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
@@ -175,5 +177,4 @@ const mapDispatchToProps = {
     setToken: MainActions.setToken,
     setIsLoading: MainActions.setIsLoading,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(BasePage);
