@@ -8,13 +8,13 @@
 
 3. Select the `Drivers` option, as we have to link to a Node.js App (User Service)
 
-![alt text](../user-service/DriverSelection.png)
+![alt text](../user-service/GuideAssets/DriverSelection.png)
 
 4. Select `Node.js` in the `Driver` pull-down menu, and copy the connection string.
 
 Notice, you may see `<password>` in this connection string. We will be replacing this with the admin account password that we created earlier on when setting up the Shared Cluster.
 
-![alt text](../user-service/ConnectionString.png)
+![alt text](../user-service/GuideAssets/ConnectionString.png)
 
 5. Rename the `.env.sample` file to `.env` in the `user-service` directory.
 
