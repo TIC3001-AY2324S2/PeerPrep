@@ -1,10 +1,43 @@
-## Running User Service
+# Question Service Guide
+
+## Setting-up
+
+1. Set up a MongoDB Shared Cluster by following the steps in this [Guide](./MongoDBSetup.md).
+
+2. After setting up, go to the Database Deployment Page. You would see a list of the Databases you have set up. Select `Connect` on the cluster you just created earlier on for Question Service.
+
+![alt text](../user-service/GuideAssets/ConnectCluster.png)
+
+3. Select the `Drivers` option, as we have to link to a Node.js App (Question Service)
+
+![alt text](../user-service/GuideAssets/DriverSelection.png)
+
+4. Select `Node.js` in the `Driver` pull-down menu, and copy the connection string.
+
+Notice, you may see `<password>` in this connection string. We will be replacing this with the admin account password that we created earlier on when setting up the Shared Cluster.
+
+![alt text](../user-service/GuideAssets/ConnectionString.png)
+
+5. Rename the `.env.sample` file to `.env` in the `question-service` directory.
+
+6. Update the `DB_CLOUD_URI` of the `.env` file, and paste the string we copied earlier in step 4. Also remember to replace the `<password>` placeholder with the actual password.
+
+```
+DB_CLOUD_URI=<CONNECTION_STRING>
+DB_LOCAL_URI=mongodb://localhost/${KEY_IN_YOUR_DB_HERE}
+PORT=3002
+ENV=PROD
+JWT_SECRET=you-can-replace-this-with-your-own-secret
+```
+
+
+## Running Question Service
 
 1. Open Command Line/Terminal and navigate into the `question-service` directory.
 
 2. Run the command: `npm install`. This will install all the necessary dependencies.
 
-3. Run the command `npm start` to start the User Service.
+3. Run the command `npm start` to start the Question Service.
 
 ## Uploading Sample Questions CSV to MongoDB
 
@@ -43,7 +76,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `POST`
 
-- Endpoint: http://localhost:3001//api/question/create
+- Endpoint: http://localhost:3002//api/question/create
 
 - Body: Required: title (string), description (string), category (string), complexity (['Easy', 'Medium', 'Hard'])
 
@@ -51,7 +84,7 @@ Make sure your username and password is entered correctly.
 {
   "title": "SampleTitleName",
   "description": "This is the sample question's description and an example",
-  "category": ["SampleCategoryName", "SampleCategoryName2" ...],
+  "categories": ["SampleCategoryName", "SampleCategoryName2" ...],
   "complexity": "Easy",
   "testCase": [
     {
@@ -94,7 +127,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `GET`
 
-- Endpoint: http://localhost:3001/api/question/:id
+- Endpoint: http://localhost:3002/api/question/:id
 
 - Body: Required: id (number)
 
@@ -118,7 +151,13 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `GET`
 
-- Endpoint: http://localhost:3001/api/question/all
+- Endpoint: http://localhost:3002/api/question/all
+
+- Query Parameters: 
+  - `page`: Page number. Example: `page=1`
+  - `limit`: Max number of question per page. Example: `limit=3`
+
+- Example: http://localhost:3002/api/question/all?page=1&limit=3
 
 - Body: Not Required
 
@@ -148,8 +187,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `DELETE`
 
-- Endpoint: http://localhost:3001/api/question/:id
-
+3002
 - Body: Required: id (number)
 
 ```json
@@ -185,7 +223,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `PATCH`
 
-- Endpoint: http://localhost:3001/api/question/:id
+- Endpoint: http://localhost:3002/api/question/:id
 
 - Body: Required: title (string), description (string), category (string), complexity (['Easy', 'Medium', 'Hard'])
 
@@ -193,7 +231,7 @@ Make sure your username and password is entered correctly.
 {
   "title": "SampleTitleName",
   "description": "This is the sample question's description and an example",
-  "category": ["SampleCategoryName", "SampleCategoryName2" ...],
+  "categories": ["SampleCategoryName", "SampleCategoryName2" ...],
   "complexity": "Easy",
   "testCase": [
     {

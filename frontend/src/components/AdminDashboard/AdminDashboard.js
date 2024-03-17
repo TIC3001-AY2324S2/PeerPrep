@@ -6,8 +6,7 @@ import {IoTrash} from "react-icons/io5";
 import {deleteQuestion, getQuestions} from "../../apis/crud-question";
 import Modal from 'react-modal';
 import EditQuestion from "../EditQuestion/EditQuestion";
-import {MdOutlineArrowForwardIos} from "react-icons/md";
-import {MdOutlineArrowBackIosNew} from "react-icons/md";
+import {Pagination} from "@mui/material";
 
 export default function AdminDashboard(props) {
 
@@ -202,39 +201,13 @@ export default function AdminDashboard(props) {
                     </table>
 
                     <div className={'pagination'}>
-                        {/*<button className={'support-btn'} onClick={handleFirstPage}><MdOutlineArrowBackIosNew /></button>*/}
-                        <button className={'support-btn'} onClick={handlePrevPage}><MdOutlineArrowBackIosNew/></button>
-                        {/*<button>{page}</button>*/}
-                        {(page < 5 || totalPages <= 5) ?
-                            Array.from({length: 5}, (_, i) => i + 1).map(pageNumber => (
-                                <button
-                                    key={pageNumber}
-                                    onClick={() => setPage(pageNumber)}
-                                    className={pageNumber === page ? 'pagination-button-active' : 'pagination-button'}
-                                >
-                                    {pageNumber}
-                                </button>
-                            ))
-                            :
-                            <>
-                                {page > 5 && <span>...</span>}
-                                {Array.from({length: 5}, (_, i) => page - 4 + i)
-                                    .filter(pageNumber => pageNumber >= 1 && pageNumber <= totalPages)
-                                    .map(pageNumber => (
-                                        <button
-                                            key={pageNumber}
-                                            onClick={() => setPage(pageNumber)}
-                                            className={pageNumber === page ? 'pagination-button-active' : 'pagination-button'}
-                                        >
-                                            {pageNumber}
-                                        </button>
-                                    ))
-                                }
-                                {page < totalPages && <span>...</span>}
-                            </>
-                        }
-                        <button className={'support-btn'} onClick={handleNextPage}><MdOutlineArrowForwardIos/></button>
-                        {/*<button className={'support-btn'} onClick={handleLastPage}><MdOutlineArrowForwardIos /></button>*/}
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={(event, value) => setPage(value)}
+                            color="secondary"
+                            className="pagination-active"
+                        />
                     </div>
                 </div>
             </div>
@@ -243,7 +216,6 @@ export default function AdminDashboard(props) {
                 onRequestClose={closeModal}
                 contentLabel="Edit Question"
                 style={modalStyles}
-                // className={'modal'}
             >
                 <EditQuestion id={editQuestionId} closeModal={closeModal}
                               refreshQuestions={() => refreshQuestions(page, size)}/>

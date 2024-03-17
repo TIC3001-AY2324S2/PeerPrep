@@ -47,6 +47,12 @@ export async function createQuestion({ title, description, category, complexity,
   return await newQuestion.save();
 }
 
+export async function getTotalQuestionCount() {
+  const lastQuestion = await QuestionModel.findOne().sort('-id');
+  const highestId = lastQuestion ? lastQuestion.id : 0;
+  return highestId;
+}
+
 export async function deleteQuestion(id) {
   const deletedQuestion = await QuestionModel.deleteOne({ id: id });
   // Update all questions with id greater than the deleted question

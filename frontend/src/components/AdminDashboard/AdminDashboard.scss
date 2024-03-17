@@ -181,48 +181,35 @@ h4 {
   margin-top: 20px;
 }
 
-.pagination button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 5px;
-  cursor: pointer;
+.pagination-active button {
+  color: #9A9AB0;
+  background-color: white;
+  border: 1px solid #DBD7F4;
   border-radius: 5px;
-  width: 30px;
-  height: 30px;
 }
-
-.pagination button:hover {
+.pagination-active button:hover {
   color: #000000;
   background-color: #DBD7F4;
   border: 1px solid #DBD7F4;
 }
-
-
-.pagination-button {
-  color: #9A9AB0;
+.pagination-active button:active {
+  color: #000000;
+  background-color: #DBD7F4;
   border: 1px solid #DBD7F4;
-  background: none;
 }
-
-.pagination-button-active {
-  background-color: #5541D7;
+.pagination-active button:focus {
   color: white;
-  border: 1px solid #5541D7;
+  background-color: #5541D7;
+  border: 1px solid #DBD7F4;
 }
-
-.support-btn {
-  font-size: 20px;
-  background-color: white;
-  color: #9A9AB0;
-  border: none;
+.pagination-active button:visited {
+  color: white;
+  background-color: #5541D7;
+  border: 1px solid #DBD7F4;
 }
-
-.pagination span {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  margin: 5px;
-  color: #9A9AB0;
+.Mui-selected {
+    color: white;
+    background-color: #5541D7 !important;
+    border: 1px solid #DBD7F4;
+    border-radius: 5px;
 }
-
