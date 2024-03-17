@@ -74,7 +74,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `POST`
 
-- Endpoint: http://localhost:3001//api/question/create
+- Endpoint: http://localhost:3002//api/question/create
 
 - Body: Required: title (string), description (string), category (string), complexity (['Easy', 'Medium', 'Hard'])
 
@@ -125,7 +125,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `GET`
 
-- Endpoint: http://localhost:3001/api/question/:id
+- Endpoint: http://localhost:3002/api/question/:id
 
 - Body: Required: id (number)
 
@@ -149,7 +149,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `GET`
 
-- Endpoint: http://localhost:3001/api/question/all
+- Endpoint: http://localhost:3002/api/question/all
 
 - Body: Not Required
 
@@ -179,8 +179,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `DELETE`
 
-- Endpoint: http://localhost:3001/api/question/:id
-
+3002
 - Body: Required: id (number)
 
 ```json
@@ -216,7 +215,7 @@ Make sure your username and password is entered correctly.
 
 - HTTP Method: `PATCH`
 
-- Endpoint: http://localhost:3001/api/question/:id
+- Endpoint: http://localhost:3002/api/question/:id
 
 - Body: Required: title (string), description (string), category (string), complexity (['Easy', 'Medium', 'Hard'])
 
