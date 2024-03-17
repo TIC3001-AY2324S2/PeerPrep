@@ -125,16 +125,16 @@ class BasePage extends React.Component {
                                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
-                                    <MenuItem
-                                        onClick={() => {
-                                            this.props.navigate({
-                                                pathname: `/user/${this.props.userInfo.username}/profile/overview`,
-                                                replace: true,
-                                            })
-                                        }}
-                                    >
-                                        <AccountBoxIcon style={{ marginRight: '8px' }} /> Profile
-                                    </MenuItem>
+                                    {/*<MenuItem*/}
+                                    {/*    onClick={() => {*/}
+                                    {/*        this.props.navigate({*/}
+                                    {/*            pathname: `/user/${this.props.userInfo.username}/profile/overview`,*/}
+                                    {/*            replace: true,*/}
+                                    {/*        })*/}
+                                    {/*    }}*/}
+                                    {/*>*/}
+                                    {/*    <AccountBoxIcon style={{ marginRight: '8px' }} /> Profile*/}
+                                    {/*</MenuItem>*/}
                                     <MenuItem onClick={() => this.goToAdminDashboard()}>
                                         <SettingsIcon style={{ marginRight: '8px' }} /> Admin Dashboard
                                     </MenuItem>

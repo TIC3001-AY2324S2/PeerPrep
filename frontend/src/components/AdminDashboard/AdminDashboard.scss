@@ -11,7 +11,7 @@ h1 {
   flex-direction: column;
   margin: auto;
   background: white;
-  padding: 30px;
+  padding: 40px;
   width: 80%;
   border-radius: 10px;
 }
@@ -50,7 +50,7 @@ h1 {
 
 .add-icon {
   font-size: 18px;
-  front-weight: 600;
+  font-weight: 600;
   color: #5541D7;
   margin-right: 7px;
 
@@ -80,7 +80,7 @@ th, td {
   border-top: 1px solid #DBD7F4;
   padding: 8px;
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 th {
@@ -95,12 +95,23 @@ tr:hover {
 }
 
 
-.question-id, .question-difficulty, .question-select, .question-edit {
+.question-id, .question-difficulty, .question-delete, .question-edit {
   text-align: center;
 }
 
-.question-id, .question-difficulty, .question-select, .question-category, .question-title {
+.question-id, .question-difficulty, .question-category, .question-title {
   text-transform: capitalize;
+}
+.question-title{
+  padding-left: 20px;
+}
+.question-edit:hover {
+  background-color: #DBD7F4;
+  color: #5541D7;
+}
+
+.question-edit {
+  width: 50px;
 }
 
 .question-edit button {
@@ -140,6 +151,10 @@ h4 {
   margin-top: 5px;
 }
 
+.question-delete {
+  width: 50px;
+}
+
 .question-delete button {
   font-size: 18px;
   cursor: pointer;
@@ -148,6 +163,11 @@ h4 {
   color: #9A9AB0;
   background: none;
   border: none;
+}
+
+.question-delete:hover {
+  background-color: #DBD7F4;
+  color: #5541D7;
 }
 
 .question-delete button:hover {
@@ -206,14 +226,3 @@ h4 {
   color: #9A9AB0;
 }
 
-.Modal {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0.2);
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  z-index: 1000;
-}

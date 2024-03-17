@@ -95,6 +95,15 @@ export default function AdminDashboard(props) {
         setIsModalOpen(false);
     };
 
+    const modalStyles = {
+        content: {
+            top: '15%',
+            left: '20%',
+            right: '20%',
+
+        },
+    };
+
 
     return (
         <>
@@ -114,7 +123,7 @@ export default function AdminDashboard(props) {
 
                             <th>ID</th>
                             <th>Title</th>
-                            <th>Category</th>
+                            <th>Categories</th>
                             <th>Difficulty</th>
                             <th></th>
                             <th></th>
@@ -122,22 +131,43 @@ export default function AdminDashboard(props) {
                         {questions.map((question) => (
                             <>
                                 <tr>
-                                    <td className={'question-id'}>#{question.id}</td>
+                                    <td className={'question-id'} onClick={() => {
+                                        if (currentSelectId === question.id) {
+                                            setCurrentSelectId(-1)
+                                            return
+                                        }
+                                        setCurrentSelectId(question.id)
+                                    }}>#{question.id}</td>
                                     <td className={'question-title'}
                                         onClick={() => {
-                                            // if the question is already selected, unselect it
                                             if (currentSelectId === question.id) {
                                                 setCurrentSelectId(-1)
                                                 return
                                             }
-                                            // if the question is not selected, select it
                                             setCurrentSelectId(question.id)
                                         }}
                                     >{question.title}</td>
-                                    <td className={'question-category'}>{question.category.join(', ')}</td>
-                                    <td className={'question-difficulty'}>{question.difficulty}</td>
-                                    <td className={'question-edit'}>
-                                        <button onClick={goToEditQuestion(question.id)}><FiEdit3/></button>
+                                    <td className={'question-category'}
+                                        onClick={() => {
+                                            if (currentSelectId === question.id) {
+                                                setCurrentSelectId(-1)
+                                                return
+                                            }
+                                            setCurrentSelectId(question.id)
+                                        }}
+                                    >{
+                                        question.categories ? question.categories.join(', ') : ''}</td>
+                                    <td className={'question-difficulty'}
+                                        onClick={() => {
+                                            if (currentSelectId === question.id) {
+                                                setCurrentSelectId(-1)
+                                                return
+                                            }
+                                            setCurrentSelectId(question.id)
+                                        }}
+                                    >{question.complexity}</td>
+                                    <td className={'question-edit'} onClick={goToEditQuestion(question.id)}>
+                                        <button ><FiEdit3/></button>
                                     </td>
                                     <td className={'question-delete'}>
                                         <button onClick={callDeleteQuestion(question.id)}>
@@ -154,8 +184,7 @@ export default function AdminDashboard(props) {
                                             </div>
                                             <div className={'question-example'}>
                                                 <h4>Example:</h4>
-                                                {question.testCases.map((testCase) => (
-
+                                                {question.testCase.map((testCase) => (
                                                     <div>
                                                         <ol>
                                                             Input: {testCase.input} <br></br>
@@ -188,7 +217,7 @@ export default function AdminDashboard(props) {
                             ))
                             :
                             <>
-                                {page > 5  && <span>...</span>}
+                                {page > 5 && <span>...</span>}
                                 {Array.from({length: 5}, (_, i) => page - 4 + i)
                                     .filter(pageNumber => pageNumber >= 1 && pageNumber <= totalPages)
                                     .map(pageNumber => (
@@ -201,7 +230,7 @@ export default function AdminDashboard(props) {
                                         </button>
                                     ))
                                 }
-                                {page < totalPages  && <span>...</span>}
+                                {page < totalPages && <span>...</span>}
                             </>
                         }
                         <button className={'support-btn'} onClick={handleNextPage}><MdOutlineArrowForwardIos/></button>
@@ -213,9 +242,11 @@ export default function AdminDashboard(props) {
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="Edit Question"
-                className="Modal"
+                style={modalStyles}
+                // className={'modal'}
             >
-                <EditQuestion id={editQuestionId} closeModal={closeModal}/>
+                <EditQuestion id={editQuestionId} closeModal={closeModal}
+                              refreshQuestions={() => refreshQuestions(page, size)}/>
             </Modal>
         </>
     )

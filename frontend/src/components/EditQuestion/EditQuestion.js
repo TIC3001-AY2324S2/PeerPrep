@@ -7,19 +7,22 @@ import Select from 'react-select';
 
 export default function EditQuestion(props) {
 
-    const categories = [
-        {value: 'category1', label: 'Category 1'},
-        {value: 'category2', label: 'Category 2'},
-        {value: 'category3', label: 'Category 3'},
-        // add more categories as needed
+    const categoryList = [
+        {value: 'Strings', label: 'Strings'},
+        {value: 'Algorithms', label: 'Algorithms'},
+        {value: 'Brainteaser', label: 'Brainteaser'},
+        {value: 'Data Structure', label: 'Data Structure'},
+        {value: 'Databases', label: 'Databases'},
+        {value: 'Recursion', label: 'Recursion'},
+        {value: 'Bit Manipulation', label: 'Bit Manipulation'},
     ];
     const getCategoryByValue = (values) => {
-        return categories.filter(category => values.includes(category.value));
+        return categoryList.filter(categories => values.includes(categories.value));
     }
     const difficulties = [
-        {value: 'easy', label: 'Easy'},
-        {value: 'medium', label: 'Medium'},
-        {value: 'hard', label: 'Hard'},
+        {value: 'Easy', label: 'Easy'},
+        {value: 'Medium', label: 'Medium'},
+        {value: 'Hard', label: 'Hard'},
     ];
     const getDifficultyByValue = (value) => {
         return difficulties.find(difficulty => difficulty.value === value);
@@ -29,11 +32,11 @@ export default function EditQuestion(props) {
 
     const qId = pathId || props.id;
 
-    const [id, setId] = useState(null);
+    const [id, setId] = useState(qId);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [testCases, setTestCases] = useState([{input: '', result: ''}]);
-    const [category, setCategory] = useState([]);
+    const [categories, setCategory] = useState([]);
     const [difficulty, setDifficulty] = useState('');
 
     const handleAddTestCase = () => {
@@ -61,7 +64,7 @@ export default function EditQuestion(props) {
 
 
     useEffect(() => {
-        if (qId !== 'new') {
+        if (qId !== null) {
             getQuestionById(qId)
                 .then(resp => {
                     if (resp.error) {
@@ -69,13 +72,13 @@ export default function EditQuestion(props) {
                         return;
                     }
                     console.log("get question by id", resp.data)
-                    let data = resp.data;
+                    let data = resp.data.question;
                     setId(data.id);
                     setTitle(data.title);
                     setDescription(data.description);
-                    setTestCases(data.testCases);
-                    setCategory(data.category);
-                    setDifficulty(data.difficulty);
+                    setTestCases(data.testCase || []);
+                    setCategory(data.categories || []);
+                    setDifficulty(data.complexity || 'Easy');
                 });
         } else {
             setId(null);
@@ -89,21 +92,21 @@ export default function EditQuestion(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('submitting', title, description, testCases, category, difficulty);
-        if (!title || !description || !testCases.length || !category.length || !difficulty) {
+        console.log('submitting', id, title, description, testCases, categories, difficulty);
+        if (!title || !description || !testCases.length || !categories.length || !difficulty) {
             alert('All fields are required');
             return;
         }
 
         // Serialize state to JSON
-        const questionData = JSON.stringify({
+        const questionData = {
             id,
             title,
             description,
-            testCases,
-            category,
-            difficulty
-        });
+            testCase: testCases,
+            categories,
+            complexity: difficulty
+        };
         createOrUpdateQuestion(questionData)
             .then(resp => {
                 if (resp.error) {
@@ -112,6 +115,7 @@ export default function EditQuestion(props) {
                 }
                 alert('Question created or updated successfully');
                 props.closeModal();
+                props.refreshQuestions();
             })
     };
 
@@ -122,72 +126,72 @@ export default function EditQuestion(props) {
     };
 
     return (
-            <form onSubmit={handleSubmit}>
-                <h2 className={'from-header'}>{id !== null ? 'Edit Question' : 'Add New Question'}</h2>
-                <label>Question Title * </label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                <label>Question Description * </label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)}/>
+        <form onSubmit={handleSubmit}>
+            <h2 className={'from-header'}>{id !== null ? 'Edit Question' : 'Add New Question'}</h2>
+            <label>Question Title * </label>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
+            <label>Question Description * </label>
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)}/>
 
-                {/* handle test cases, category and difficulty inputs similarly */}
-                {testCases.map((testCase, index) => (
+            {/* handle test cases, category and difficulty inputs similarly */}
+            {testCases.map((testCase, index) => (
 
-                    <div key={index} className={'form-section-testcase-1'}>
-                        <div className={'form-section-1'}>
-                            <div className={'test-case'}>
-                                <label>Test Case</label>
-                                <textarea value={testCase.input}
-                                          onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}/>
-                            </div>
-                            <div className={'test-result'}>
-                                <label>Test Result</label>
-                                <textarea value={testCase.result}
-                                          onChange={(e) => handleTestCaseChange(index, 'result', e.target.value)}/>
-                            </div>
+                <div key={index} className={'form-section-testcase-1'}>
+                    <div className={'form-section-1'}>
+                        <div className={'test-case'}>
+                            <label>Test Case</label>
+                            <textarea value={testCase.input}
+                                      onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}/>
                         </div>
-
-                        <button className={'remove-testcase'} type={'button'}
-                                onClick={() => handleRemoveTestCase(index)}>Remove
-                        </button>
-
+                        <div className={'test-result'}>
+                            <label>Test Result</label>
+                            <textarea value={testCase.result}
+                                      onChange={(e) => handleTestCaseChange(index, 'result', e.target.value)}/>
+                        </div>
                     </div>
-                ))}
 
-                <div className={'form-section-testcase-2'}>
-                    <button className={'add-testcase'} type={'button'} onClick={handleAddTestCase}>Add Test Case
+                    <button className={'remove-testcase'} type={'button'}
+                            onClick={() => handleRemoveTestCase(index)}>Remove
                     </button>
-                </div>
-                <div className={'form-section-2'}>
 
-                    <div className={'form-category'}>
-                        <label>Category * </label>
-                        <Select
-                            isMulti
-                            name="categories"
-                            options={categories}
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                            onChange={handleCategoryChange}
-                            value={getCategoryByValue(category)}
-                        />
-                    </div>
-                    <div className={'form-difficulty'}>
-                        <label>Difficulty * </label>
-                        <Select
-                            name="difficulty"
-                            options={difficulties}
-                            className="basic-single-select"
-                            classNamePrefix="select"
-                            onChange={handleDifficultyChange}
-                            value={getDifficultyByValue(difficulty)}
-                        />
-                    </div>
                 </div>
-                <div className={'form-buttons'}>
-                    <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button className={'submit-btn'} type="submit">Save</button>
+            ))}
+
+            <div className={'form-section-testcase-2'}>
+                <button className={'add-testcase'} type={'button'} onClick={handleAddTestCase}>Add Test Case
+                </button>
+            </div>
+            <div className={'form-section-2'}>
+
+                <div className={'form-category'}>
+                    <label>Categories * </label>
+                    <Select
+                        isMulti
+                        name="categories"
+                        options={categories}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={handleCategoryChange}
+                        value={getCategoryByValue(categories)}
+                    />
                 </div>
-            </form>
+                <div className={'form-difficulty'}>
+                    <label>Difficulty * </label>
+                    <Select
+                        name="difficulty"
+                        options={difficulties}
+                        className="basic-single-select"
+                        classNamePrefix="select"
+                        onChange={handleDifficultyChange}
+                        value={getDifficultyByValue(difficulty)}
+                    />
+                </div>
+            </div>
+            <div className={'form-buttons'}>
+                <button type="button" onClick={handleCancel}>Cancel</button>
+                <button className={'submit-btn'} type="submit">Save</button>
+            </div>
+        </form>
 
     );
 }
