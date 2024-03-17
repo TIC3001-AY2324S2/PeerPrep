@@ -31,6 +31,7 @@ Make sure your username and password is entered correctly.
 ![select csv](./guide_assets/select_csv.png)
 
 6. Check fields and press "import"
+
 ![import](./guide_assets/import.png)
 
 
