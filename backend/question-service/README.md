@@ -14,19 +14,24 @@
 
 2. On MongoDBCompass, Add and connect a new connection (The URI should be the cluster you've created "mongodb+srv:...")
 Make sure your username and password is entered correctly.
+
 ![enter URI](./guide_assets/URI.png)
 ![connect compass](./guide_assets/connect_compass.png)
 
 3. Create a new database + collection
+
 ![create database](./guide_assets/create_database.png)
 
 4. Click "Add Data" and then "Import JSON or CSV file"
+
 ![add data](./guide_assets/add_data.png)
 
 5. Select the CSV sample questions file
+
 ![select csv](./guide_assets/select csv.png)
 
 6. Check fields and press "import"
+
 ![import](./guide_assets/import.png)
 
 
