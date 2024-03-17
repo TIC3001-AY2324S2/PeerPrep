@@ -19,7 +19,7 @@ let QuestionModelSchema = new Schema({
     type: String,
     required: true,
   },
-  category: {
+  categories: {
     type: Array,
     require: true,
   },

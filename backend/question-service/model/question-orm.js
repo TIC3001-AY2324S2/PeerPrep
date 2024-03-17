@@ -2,6 +2,7 @@
 import {
     findQuestionByID,
     findAllQuestion,
+    getTotalQuestionCount,
     findOneQuestionByComplexity,
     createQuestion,
     deleteQuestion,

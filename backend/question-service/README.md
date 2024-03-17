@@ -84,7 +84,7 @@ Make sure your username and password is entered correctly.
 {
   "title": "SampleTitleName",
   "description": "This is the sample question's description and an example",
-  "category": ["SampleCategoryName", "SampleCategoryName2" ...],
+  "categories": ["SampleCategoryName", "SampleCategoryName2" ...],
   "complexity": "Easy",
   "testCase": [
     {
@@ -152,6 +152,12 @@ Make sure your username and password is entered correctly.
 - HTTP Method: `GET`
 
 - Endpoint: http://localhost:3002/api/question/all
+
+- Query Parameters: 
+  - `page`: Page number. Example: `page=1`
+  - `limit`: Max number of question per page. Example: `limit=3`
+
+- Example: http://localhost:3002/api/question/all?page=1&limit=3
 
 - Body: Not Required
 
@@ -225,7 +231,7 @@ Make sure your username and password is entered correctly.
 {
   "title": "SampleTitleName",
   "description": "This is the sample question's description and an example",
-  "category": ["SampleCategoryName", "SampleCategoryName2" ...],
+  "categories": ["SampleCategoryName", "SampleCategoryName2" ...],
   "complexity": "Easy",
   "testCase": [
     {

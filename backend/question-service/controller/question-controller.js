@@ -9,7 +9,9 @@ import {
 
 
 export async function getAllQuestion(req, res) {
-  console.log(`GET ALL Question`);
+  const page = req.query.page;
+  const limit = req.query.limit;
+  console.log(`GET ${limit} QUESTIONS FOR PAGE ${page}`);
 
   const response = await _findAllQuestion();
 
@@ -21,12 +23,35 @@ export async function getAllQuestion(req, res) {
     return res.status(400).json({ message: "Error With Question Repository" });
   } else {
     console.log(`Questions loaded!`);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const slicedResponse = response.slice(startIndex, endIndex);
     return res.status(200).json({
       message: `Questions loaded!`,
-      questions: response,
+      questions: slicedResponse,
     });
   }
 }
+
+// export async function getTotalQuestionCount(req, res) {
+//   console.log(`GET TOTAL QUESTION COUNT`);
+
+//   const response = await _getTotalQuestionCount();
+
+//   console.log(response);
+
+//   if (response === null) {
+//     return res.status(404).json({ message: `No Question In Repository` });
+//   } else if (response.err) {
+//     return res.status(400).json({ message: "Error With Question Repository" });
+//   } else {
+//     console.log(`Count Retrieved!`);
+//     return res.status(200).json({
+//       message: `Count Retrieved!`,
+//       questions: response,
+//     });
+//   }
+// }
 
 export async function getQuestionById(req, res) {
   const id = req.params.id;
