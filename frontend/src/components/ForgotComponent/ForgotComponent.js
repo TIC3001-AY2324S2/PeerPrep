@@ -85,9 +85,9 @@ class ForgotComponent extends React.Component {
                     </div>
                     <form
                         onSubmit={this.handleSubmit}
-                        className={'full-width-class'}
+                        className={'from-forgot-panel'}
                     >
-                        <FormControl className={'full-width-class'}>
+                        <FormControl className={'from-forgot-control'}>
                             <TextField
                                 size="medium"
                                 className={'forgot-panel-text-field'}
