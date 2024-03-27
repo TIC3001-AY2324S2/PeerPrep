@@ -1,0 +1,142 @@
+[
+  {
+    "questionTitle": "Reverse a String",
+    "questionDesc": "Write a function that reverses a string. The input string is given as an array of characters s. You must do this by modifying the input array in-place with O(1) extra memory.",
+    "questionCat": " Algorithms,Strings",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/reverse-string/"
+  },
+  {
+    "questionTitle": "Linked List Cycle Detection",
+    "questionDesc": "Implement a function to detect if a linked list contains a cycle.",
+    "questionCat": "Data Structures, Algorithms",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/linked-list-cycle/"
+  },
+  {
+    "questionTitle": "Roman to Integer",
+    "questionDesc": "Given a roman numeral, convert it to an integer.",
+    "questionCat": "Algorithms",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/roman-to-integer/"
+  },
+  {
+    "questionTitle": "Add Binary",
+    "questionDesc": "Given two binary strings a and b, return their sum as a binary string.",
+    "questionCat": "Bit Manipulation, Algorithms",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/add-binary/"
+  },
+  {
+    "questionTitle": "Fibonacci Number",
+    "questionDesc": "Given n, calculate F(n).",
+    "questionCat": " Algorithms,Recursion",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/fibonacci-number/"
+  },
+  {
+    "questionTitle": "Implement Stack using Queues",
+    "questionDesc": "Implement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (push, top, pop, and empty).",
+    "questionCat": "Data Structures",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/implement-stack-using-queues/"
+  },
+  {
+    "questionTitle": "Combine Two Tables",
+    "questionDesc": "Write a solution to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present in the Address table, report null instead.",
+    "questionCat": "Databases",
+    "questionComplexity": "Easy",
+    "questionLink": "https://leetcode.com/problems/combine-two-tables/"
+  },
+  {
+    "questionTitle": "Repeated DNA Sequences",
+    "questionDesc": "Given a string s that represents a DNA sequence, return all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.",
+    "questionCat": "Algorithms, Bit Manipulation",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/repeated-dna-sequences/"
+  },
+  {
+    "questionTitle": "Course Schedule",
+    "questionDesc": "Return true if you can finish all courses.",
+    "questionCat": "Data Structures, Algorithms",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/course-schedule/"
+  },
+  {
+    "questionTitle": "LRU Cache Design",
+    "questionDesc": "Design and implement an LRU (Least Recently Used) cache.",
+    "questionCat": "Data Structures",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/lru-cache/"
+  },
+  {
+    "questionTitle": "Longest Common Subsequence",
+    "questionDesc": "Return the length of their longest common subsequence.",
+    "questionCat": "Strings, Algorithms",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/longest-common-subsequence/"
+  },
+  {
+    "questionTitle": "Rotate Image",
+    "questionDesc": "Rotate the image by 90 degrees (clockwise).",
+    "questionCat": "Arrays, Algorithms",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/rotate-image/"
+  },
+  {
+    "questionTitle": "Airplane Seat Assignment Probability",
+    "questionDesc": "Return the probability that the nth person gets his own seat.",
+    "questionCat": "Brainteaser",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/airplane-seat-assignment-probability/"
+  },
+  {
+    "questionTitle": "Validate Binary Search Tree",
+    "questionDesc": "Determine if it is a valid binary search tree (BST).",
+    "questionCat": "Data Structures, Algorithms",
+    "questionComplexity": "Medium",
+    "questionLink": "https://leetcode.com/problems/validate-binary-search-tree/"
+  },
+  {
+    "questionTitle": "Sliding Window Maximum",
+    "questionDesc": "Return the max sliding window.",
+    "questionCat": "Arrays, Algorithms",
+    "questionComplexity": "Hard",
+    "questionLink": "https://leetcode.com/problems/sliding-window-maximum/"
+  },
+  {
+    "questionTitle": "N-Queen Problem",
+    "questionDesc": "Return all distinct solutions to the n-queens puzzle.",
+    "questionCat": "Algorithms",
+    "questionComplexity": "Hard",
+    "questionLink": "https://leetcode.com/problems/n-queens/"
+  },
+  {
+    "questionTitle": "Serialize and Deserialize a Binary Tree",
+    "questionDesc": "Design an algorithm to serialize and deserialize a binary tree.",
+    "questionCat": "Data Structures, Algorithms",
+    "questionComplexity": "Hard",
+    "questionLink": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"
+  },
+  {
+    "questionTitle": "Wildcard Matching",
+    "questionDesc": "Implement wildcard pattern matching with support for '?' and '*'.",
+    "questionCat": "Strings, Algorithms",
+    "questionComplexity": "Hard",
+    "questionLink": "https://leetcode.com/problems/wildcard-matching/"
+  },
+  {
+    "questionTitle": "Chalkboard XOR Game",
+    "questionDesc": "Return true if Alice wins the game, assuming both players play optimally.",
+    "questionCat": "Brainteaser",
+    "questionComplexity": "Hard",
+    "questionLink": "https://leetcode.com/problems/chalkboard-xor-game/"
+  },
+  {
+    "questionTitle": "Trips and Users",
+    "questionDesc": "Write a solution to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present in the Address table, report null instead.",
+    "questionCat": "Databases",
+    "questionComplexity": "Hard",
+    "questionLink": "https://leetcode.com/problems/trips-and-users/"
+  }
+]

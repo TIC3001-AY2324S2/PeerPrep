@@ -52,16 +52,25 @@
                             aria-selected="true">Add Question</a>
                     </li>
                 </ul>
-                <form class="d-flex">
+                <!-- <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </form> -->
             </div>
         </div>
     </nav>
 
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active m-5" id="listView" role="tabpanel" aria-labelledby="listView-tab">
+            <div class="row">
+                <div class="col">               
+                </div>
+                <div class="col">
+                    <label for="fileUpload" class="form-label">Upload JSON File</label>
+                    <input type="file" class="form-control" id="fileUpload" accept=".json">
+                    <button type="button" onclick="handleFileUpload()" class="btn btn-primary">Upload File</button>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-dark">
@@ -95,6 +104,15 @@
             </div>
         </div>
         <div class="tab-pane fade m-5" id="detailView" role="tabpanel" aria-labelledby="detail-tab">
+            <div class="row">
+                <div class="col">
+                    <button type="button" onclick="changeTabPane(0)" class="btn btn-secondary">Back</button>
+                </div>
+                <div class="col">
+                    <button id="btnDelete" type="button" onclick="handleDelete(event)" class="btn btn-danger" style="display: none;">Delete</button>
+                </div>
+            </div>
+            
             <form>
                 <p id="my-form-status"></p>
                 <div id="idContainer" class="mb-3" style="display: none;">
@@ -133,6 +151,10 @@
                         <option value="Medium">Medium</option>
                         <option value="Hard">Hard</option>
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label for="inputLink" class="form-label">Link</label>
+                    <input type="text" class="form-control" id="inputLink" />
                 </div>
                 <button type="button" onclick="handleSubmit(event)" class="btn btn-primary">Submit</button>
                 <button type="reset" onclick="handleClear()" class="btn">Reset</button>
@@ -195,7 +217,7 @@
 
                 // Create table data cells and set their content
                 const cell1 = document.createElement('td');
-                cell1.innerHTML = `<a onclick="editQuestion('${item.questionID}')">${item.questionID}</a>`;
+                cell1.innerHTML = `<a onclick="editQuestion('${item.questionID}')" class="btn btn-link">${item.questionID} </a>`;
 
                 const cell2 = document.createElement('td');
                 cell2.textContent = item.questionTitle;
@@ -254,6 +276,7 @@
 
             handleClear()
 
+            document.getElementById('btnDelete').style.display = 'block';
             document.getElementById('idContainer').style.display = 'block';
             document.getElementById('inputID').value = question.questionID; 
             document.getElementById('inputTitle').value = question.questionTitle; 
@@ -266,6 +289,7 @@
             refreshCategory(categoryTypes, true);
             refreshCategory(selectedCategory, false);
             document.getElementById('selectComplexity').value = question.questionComplexity;
+            document.getElementById('inputLink').value = question.questionLink; 
             changeTabPane(1)
         }
 
@@ -335,6 +359,9 @@
             var searchInputs = document.querySelectorAll('.form-control');
 
             searchInputs.forEach(function (input) {
+                if (input.classList.contains('is-invalid')){
+                    input.classList.remove('is-invalid');
+                }
                 input.value = '';
             });
 
@@ -357,11 +384,13 @@
             var inputTitleField = document.getElementById('inputTitle')
             var inputDescField = document.getElementById('inputDesc')
             var selectComplexityField = document.getElementById('selectComplexity')
+            var inputLinkField = document.getElementById('inputLink')
 
             var inputID = inputIdField.value.trim()
             var inputTitle = inputTitleField.value.trim()
             var inputDesc = inputDescField.value.trim()
             var selectComplexity = selectComplexityField.value
+            var inputLink = inputLinkField.value.trim()
 
             if (inputTitle == "") {
                 inputTitleField.classList.add('is-invalid');
@@ -369,17 +398,20 @@
             if (inputDesc == "") {
                 inputDescField.classList.add('is-invalid');
             }
-            
+            if (inputLink == "") {
+                inputLinkField.classList.add('is-invalid');
+            }
+
             // If ID is empty POST, else PATCH
             if (inputID == "") {
-                inputID = questions.length + 2;
+                inputID = questions.length + 1;
                 var data = {
                     questionID: inputID,
                     questionTitle: inputTitle,
                     questionDesc: inputDesc,
                     questionCat: selectedCategory.join(","),
                     questionComplexity: selectComplexity,
-                    questionLink: "testlink"
+                    questionLink: inputLink
                 }
                 
                 try {
@@ -392,6 +424,9 @@
                     })
                     if (response.ok){
                         alert('Question added succesfully');
+                        fetchQuestionsDB()
+                        getQuestions()
+                        changeTabPane(0)
                     } else {
                         alert('Failed to add question.');
                     }
@@ -405,7 +440,7 @@
                     questionDesc: inputDesc,
                     questionCat: selectedCategory.join(","),
                     questionComplexity: selectComplexity,
-                    questionLink: "testlink"
+                    questionLink: inputLink
                 }
                 
                 try {
@@ -418,6 +453,9 @@
                     })
                     if (response.ok){
                         alert('Question updated succesfully');
+                        fetchQuestionsDB()
+                        getQuestions()
+                        changeTabPane(0)
                     } else {
                         alert('Failed to update question.');
                     }
@@ -425,10 +463,73 @@
                     console.error('Error updating question:', error);
                 }
             }
+            
+        }
+
+        async function handleDelete(event) {
+            event.preventDefault();
+
+            var inputIdField = document.getElementById('inputID')
+            var inputID = inputIdField.value.trim()
+                
+            try {
+                const response = await fetch('http://localhost:3002/api/questions/'+inputID, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                if (response.ok){
+                    alert('Question deleted succesfully');
+                } else {
+                    alert('Failed to delete question.');
+                }
+            } catch (error){
+                console.error('Error deleting question:', error);
+            }
+
             fetchQuestionsDB()
             getQuestions()
             changeTabPane(0)
         }
+
+        // Update the client-side code to display the success message and skipped questions in the alert
+        async function handleFileUpload() {
+            const fileInput = document.getElementById('fileUpload');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('http://localhost:3002/api/questions/upload', {
+                method: 'POST',
+                body: formData
+                });
+
+                const data = await response.json();
+
+                // Display the success message
+                let alertMessage = data.message;
+
+                // If there are skipped questions, add them to the alert message
+                if (data.skippedQuestions && data.skippedQuestions.length > 0) {
+                alertMessage += '\nSkipped questions:\n' + data.skippedQuestions.join('\n');
+                }
+
+                alert(alertMessage);
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                alert('An error occurred while uploading the file. Please try again.');
+            }
+        }
+       
+
         window.onload = fetchQuestionsDB;
         refreshCategory(categoryTypes, true)
     </script>

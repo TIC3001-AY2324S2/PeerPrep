@@ -18,6 +18,7 @@ app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.DB_CLOUD_URI, {
+  dbName: 'question_db',
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
