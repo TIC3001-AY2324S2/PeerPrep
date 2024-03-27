@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>TIC3001 SPA</title>
+    <style>
+        th {
+            white-space: nowrap;
+        }
+
+        .badge {
+            font-size: 1em;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        form {
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TIC3001</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav me-auto mb-2 mb-lg-0" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="listView-tab" data-bs-toggle="tab" data-bs-target="#listView"
+                            type="button" role="tab" aria-controls="listView" aria-selected="true">Questions</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="detailView-tab" data-bs-toggle="tab" data-bs-target="#detailView"
+                            onclick="handleClear()" type="button" role="tab" aria-controls="listView"
+                            aria-selected="true">Add Question</a>
+                    </li>
+                </ul>
+                <!-- <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form> -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active m-5" id="listView" role="tabpanel" aria-labelledby="listView-tab">
+            <div class="row">
+                <div class="col">               
+                </div>
+                <div class="col">
+                    <label for="fileUpload" class="form-label">Upload JSON File</label>
+                    <input type="file" class="form-control" id="fileUpload" accept=".json">
+                    <button type="button" onclick="handleFileUpload()" class="btn btn-primary">Upload File</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" onclick="sortQuestionsByProperty('questionID')">
+                                Question Id
+                                <i class="fa fa-sort ml-3"></i>
+                            </th>
+                            <th scope="col" onclick="sortQuestionsByProperty('questionTitle')">
+                                Question Title
+                                <i class="fa fa-sort ml-3"></i>
+                            </th>
+                            <th scope="col" onclick="sortQuestionsByProperty('questionDesc')">
+                                Question Description
+                                <i class="fa fa-sort ml-3"></i>
+                            </th>
+                            <th scope="col" onclick="sortQuestionsByProperty('questionCat')">
+                                Question Category
+                                <i class="fa fa-sort ml-3"></i>
+                            </th>
+                            <th scope="col" onclick="sortQuestionsByProperty('questionComplexity')">
+                                Question Complexity
+                                <i class="fa fa-sort ml-3"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Table body will be dynamically generated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade m-5" id="detailView" role="tabpanel" aria-labelledby="detail-tab">
+            <div class="row">
+                <div class="col">
+                    <button type="button" onclick="changeTabPane(0)" class="btn btn-secondary">Back</button>
+                </div>
+                <div class="col">
+                    <button id="btnDelete" type="button" onclick="handleDelete(event)" class="btn btn-danger" style="display: none;">Delete</button>
+                </div>
+            </div>
+            
+            <form>
+                <p id="my-form-status"></p>
+                <div id="idContainer" class="mb-3" style="display: none;">
+                    <label for="inputID" name="id" class="form-label">Question Id</label>
+                    <input type="text" class="form-control" id="inputID" disabled aria-describedby="questionId" />
+                </div>
+                <div class="mb-3">
+                    <label for="inputTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="inputTitle" />
+                </div>
+                <div class="mb-3">
+                    <label for="inputDesc" class="form-label">Description</label>
+                    <textarea class="form-control" rows="5" id="inputDesc"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="selectCategory" class="form-label">Select Category</label>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <ul class="list-group" id="leftCategory">
+                                    <!-- Category choices will be dynamically generated here -->
+                                </ul>
+                            </div>
+                            <div class="col">
+                                <ul class="list-group" id="rightCategory">
+                                    <!-- Selected categories will be dynamically generated here -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="selectComplexity" class="form-label">Select Complexity</label>
+                    <select id="selectComplexity" class="form-select" aria-label="Select Complexity">
+                        <option value="Easy" selected>Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="inputLink" class="form-label">Link</label>
+                    <input type="text" class="form-control" id="inputLink" />
+                </div>
+                <button type="button" onclick="handleSubmit(event)" class="btn btn-primary">Submit</button>
+                <button type="reset" onclick="handleClear()" class="btn">Reset</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+
+    <!-- fontawesome -->
+    <script src="https://use.fontawesome.com/c0bffde2b7.js"></script>
+
+    <script>
+        // Task: CRUD on Questions
+        /*
+        id, title, desc, category, complexity
+        
+        category is a list that user can maintain: [ Strings, Algorithms, Data Structures, Bit Manipulation, Brainteaser, Databases ]
+        complexity is predefined: Easy, Medium, Hard
+        
+        */
+
+        const categoryTypes = ["Strings", "Algorithms", "Data Structures", "Bit Manipulation", "Brainteaser", "Databases"]
+        const selectedCategory = []
+        const complexityTypes = ["Easy", "Medium", "Hard"];
+        let questions = [];
+    
+        // Get all questions from the server and display
+        async function fetchQuestionsDB(){
+            try {
+                const response = await fetch('http://localhost:3002/api/questions');
+                questions = await response.json();
+                getQuestions()
+            } catch (error) {
+                console.error('Error fetching questions: ', error);
+            }
+        }
+
+        function getQuestions() {
+            // Get reference to table body
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = ""
+
+            // Iterate over the data array using forEach
+            questions.forEach(item => {
+                // Create a new row element
+                const row = document.createElement('tr');
+
+                // Create table data cells and set their content
+                const cell1 = document.createElement('td');
+                cell1.innerHTML = `<a onclick="editQuestion('${item.questionID}')" class="btn btn-link">${item.questionID} </a>`;
+
+                const cell2 = document.createElement('td');
+                cell2.textContent = item.questionTitle;
+
+                const cell3 = document.createElement('td');
+                cell3.textContent = item.questionDesc;
+
+                const cell4 = document.createElement('td');
+                // Split categories by comma
+                const categories = item.questionCat.split(",");
+
+                // Generate HTML for each category
+                const categoryBadges = categories.map(questionCat => `<span class="badge rounded-pill bg-secondary">${questionCat.trim()}</span>`);
+
+                // Join HTML for all categories
+                const categoryHTML = categoryBadges.join('');
+                cell4.innerHTML = categoryHTML;
+
+                const cell5 = document.createElement('td');
+                const complexityHTML = `<span class="badge rounded-pill bg-${item.questionComplexity == complexityTypes[0] ? 'primary' : item.questionComplexity == complexityTypes[1] ? 'warning' : 'danger'}">${item.questionComplexity}</span>`
+                cell5.innerHTML = complexityHTML;
+
+                // Append cells to the row
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                row.appendChild(cell3);
+                row.appendChild(cell4);
+                row.appendChild(cell5);
+
+                // Append row to the table body
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Sorting function
+        function sortQuestionsByProperty(sortBy) {
+            questions = questions.sort((a, b) => {
+                if (a[sortBy] < b[sortBy]) return -1;
+                if (a[sortBy] > b[sortBy]) return 1;
+                return 0;
+            });
+            getQuestions();
+        }
+
+        function sortTextList(categoryList) {
+            return categoryList.sort((a, b) => {
+                if (a < b) return -1;
+                if (a > b) return 1;
+                return 0;
+            });
+        }
+
+        function editQuestion(id) {
+            id = parseInt(id);
+            const question = questions.find(item => item.questionID === id);
+
+            handleClear()
+
+            document.getElementById('btnDelete').style.display = 'block';
+            document.getElementById('idContainer').style.display = 'block';
+            document.getElementById('inputID').value = question.questionID; 
+            document.getElementById('inputTitle').value = question.questionTitle; 
+            document.getElementById('inputDesc').value = question.questionDesc; 
+            question.questionCat.split(",").map(item => {
+                var itemIndex = categoryTypes.indexOf(item);
+                categoryTypes.splice(itemIndex, 1);
+                selectedCategory.push(item);
+            })
+            refreshCategory(categoryTypes, true);
+            refreshCategory(selectedCategory, false);
+            document.getElementById('selectComplexity').value = question.questionComplexity;
+            document.getElementById('inputLink').value = question.questionLink; 
+            changeTabPane(1)
+        }
+
+        function changeTabPane(index) {
+            const listViewTab = document.getElementById("listView-tab");
+            const detailViewTab = document.getElementById("detailView-tab");
+            const listViewPane = document.getElementById("listView");
+            const detailViewPane = document.getElementById("detailView");
+
+            if (index == 0) {
+                // Add active class to listViewTab and remove it from detailViewTab
+                listViewTab.classList.add("active");
+                detailViewTab.classList.remove("active");
+
+                // Show listViewPane and hide detailViewPane
+                listViewPane.classList.add("show", "active");
+                detailViewPane.classList.remove("show", "active");
+            } else {
+                // Add active class to detailViewTab and remove it from listViewTab
+                detailViewTab.classList.add("active");
+                listViewTab.classList.remove("active");
+
+                // Show detailViewPane and hide listViewPane
+                detailViewPane.classList.add("show", "active");
+                listViewPane.classList.remove("show", "active");
+            }
+        }
+
+        function refreshCategory(items, isLeft) {
+            items = sortTextList(items);
+            const ulElement = document.getElementById(isLeft ? "leftCategory" : "rightCategory");
+            const liItems = items.map(category =>
+                `<li class="list-group-item d-flex justify-content-between align-items-center ${isLeft ? "" : "list-group-item-success"}">${category.trim()}` +
+                (isLeft ?
+                    `<button class="btn" type="button" onclick="selectCategory('${category.trim()}')">
+                                            <i class="fa fa-caret-right"></i>
+                                            </button>`:
+                    `<button class="btn" type="button" onclick="removeCategory('${category.trim()}')">
+                                            <i class="fa fa-remove"></i>
+                                            </button>`)
+
+                + `</li>`);
+            ulElement.innerHTML = liItems.join("");
+        }
+
+        function selectCategory(item) {
+            var itemIndex = categoryTypes.indexOf(item);
+            categoryTypes.splice(itemIndex, 1);
+
+            selectedCategory.push(item);
+            refreshCategory(categoryTypes, true);
+            refreshCategory(selectedCategory, false);
+        }
+
+        function removeCategory(item) {
+            var itemIndex = selectedCategory.indexOf(item);
+            selectedCategory.splice(itemIndex, 1);
+
+            categoryTypes.push(item);
+            refreshCategory(categoryTypes, true);
+            refreshCategory(selectedCategory, false);
+        }
+
+        function handleClear() {
+            document.getElementById('idContainer').style.display = 'none';
+
+            var searchInputs = document.querySelectorAll('.form-control');
+
+            searchInputs.forEach(function (input) {
+                if (input.classList.contains('is-invalid')){
+                    input.classList.remove('is-invalid');
+                }
+                input.value = '';
+            });
+
+            var selectComplexity = document.getElementById("selectComplexity")
+            selectComplexity.value = complexityTypes[0]
+
+            for (let index = selectedCategory.length - 1; index >= 0; index--) {
+                const element = selectedCategory[index];
+                categoryTypes.push(element);
+                selectedCategory.splice(index, 1);
+            }
+            refreshCategory(categoryTypes, true);
+            refreshCategory(selectedCategory, false);
+        }
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            var inputIdField = document.getElementById('inputID')
+            var inputTitleField = document.getElementById('inputTitle')
+            var inputDescField = document.getElementById('inputDesc')
+            var selectComplexityField = document.getElementById('selectComplexity')
+            var inputLinkField = document.getElementById('inputLink')
+
+            var inputID = inputIdField.value.trim()
+            var inputTitle = inputTitleField.value.trim()
+            var inputDesc = inputDescField.value.trim()
+            var selectComplexity = selectComplexityField.value
+            var inputLink = inputLinkField.value.trim()
+
+            if (inputTitle == "") {
+                inputTitleField.classList.add('is-invalid');
+            }
+            if (inputDesc == "") {
+                inputDescField.classList.add('is-invalid');
+            }
+            if (inputLink == "") {
+                inputLinkField.classList.add('is-invalid');
+            }
+
+            // If ID is empty POST, else PATCH
+            if (inputID == "") {
+                inputID = questions.length + 1;
+                var data = {
+                    questionID: inputID,
+                    questionTitle: inputTitle,
+                    questionDesc: inputDesc,
+                    questionCat: selectedCategory.join(","),
+                    questionComplexity: selectComplexity,
+                    questionLink: inputLink
+                }
+                
+                try {
+                    const response = await fetch('http://localhost:3002/api/questions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    if (response.ok){
+                        alert('Question added succesfully');
+                        fetchQuestionsDB()
+                        getQuestions()
+                        changeTabPane(0)
+                    } else {
+                        alert('Failed to add question.');
+                    }
+                } catch (error){
+                    console.error('Error adding question:', error);
+                }
+
+            } else {
+                var data = {
+                    questionTitle: inputTitle,
+                    questionDesc: inputDesc,
+                    questionCat: selectedCategory.join(","),
+                    questionComplexity: selectComplexity,
+                    questionLink: inputLink
+                }
+                
+                try {
+                    const response = await fetch('http://localhost:3002/api/questions/'+inputID, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    if (response.ok){
+                        alert('Question updated succesfully');
+                        fetchQuestionsDB()
+                        getQuestions()
+                        changeTabPane(0)
+                    } else {
+                        alert('Failed to update question.');
+                    }
+                } catch (error){
+                    console.error('Error updating question:', error);
+                }
+            }
+            
+        }
+
+        async function handleDelete(event) {
+            event.preventDefault();
+
+            var inputIdField = document.getElementById('inputID')
+            var inputID = inputIdField.value.trim()
+                
+            try {
+                const response = await fetch('http://localhost:3002/api/questions/'+inputID, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                if (response.ok){
+                    alert('Question deleted succesfully');
+                } else {
+                    alert('Failed to delete question.');
+                }
+            } catch (error){
+                console.error('Error deleting question:', error);
+            }
+
+            fetchQuestionsDB()
+            getQuestions()
+            changeTabPane(0)
+        }
+
+        // Update the client-side code to display the success message and skipped questions in the alert
+        async function handleFileUpload() {
+            const fileInput = document.getElementById('fileUpload');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('http://localhost:3002/api/questions/upload', {
+                method: 'POST',
+                body: formData
+                });
+
+                const data = await response.json();
+
+                // Display the success message
+                let alertMessage = data.message;
+
+                // If there are skipped questions, add them to the alert message
+                if (data.skippedQuestions && data.skippedQuestions.length > 0) {
+                alertMessage += '\nSkipped questions:\n' + data.skippedQuestions.join('\n');
+                }
+
+                alert(alertMessage);
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                alert('An error occurred while uploading the file. Please try again.');
+            }
+
+            fetchQuestionsDB()
+            getQuestions()
+            changeTabPane(0)
+        }
+       
+
+        window.onload = fetchQuestionsDB;
+        refreshCategory(categoryTypes, true)
+    </script>
+</body>
+
+</html>
