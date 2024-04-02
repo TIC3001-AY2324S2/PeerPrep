@@ -6,30 +6,30 @@ import {
   IsDateString,
 } from "class-validator";
 
-export class CreateMatchingServicesDto {
+export class UpdateMatchingServicesDto {
   @IsNotEmpty()
   readonly matching_service_id: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsIn(["easy", "medium", "hard"])
   readonly difficulty: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   readonly category: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   expired_at: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsIn(["active", "cancelled", "matched", "timed_out"])
   status: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   readonly created_at: Date;
 
