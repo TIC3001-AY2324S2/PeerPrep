@@ -44,8 +44,8 @@ export class MatchingServiceController {
    * @returns A promise that resolves to the updated matching service, or null if not found.
    */
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateMatchingServiceDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
-    return this.matchingservice.update(id, updateMatchingServiceDto);
+  async update(@Param('id') id: number, @Body() updateDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
+    return this.matchingservice.update(id, updateDto);
   }
 
   /**

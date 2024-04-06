@@ -5,8 +5,6 @@ export type MatchingServicesDocument = HydratedDocument<MatchingService>;
 
 @Schema()
 export class MatchingService {
-  @Prop({ required: true })
-  matching_service_id: number;
 
   @Prop({ required: true })
   email: string;
@@ -17,13 +15,13 @@ export class MatchingService {
   @Prop({ required: true })
   category: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: () => new Date(Date.now() + (8 * 60 * 60 * 1000) + 30000) })
   expired_at: Date;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: 'active' })
   status: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: () => new Date(Date.now() + (8 * 60 * 60 * 1000)) })
   created_at: Date;
 
   @Prop()
