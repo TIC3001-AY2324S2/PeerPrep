@@ -4,7 +4,6 @@ import { MatchingServicesService } from './matchingservices.service';
 import { MatchingService, MatchingServicesSchema } from './schemas/matchingservices.schema';
 import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -20,9 +19,6 @@ import { BullModule } from '@nestjs/bull';
         inject: [getConnectionToken()],
       },
     ]),
-    BullModule.registerQueue({
-      name: 'matching-service',
-    }),
   ],
   controllers: [MatchingServiceController],
   providers: [MatchingServicesService],

@@ -3,20 +3,19 @@ import { MatchingServicesService } from "./matchingservices.service";
 import { CreateMatchingServicesDto } from "./dto/create-matching-services.dto";
 import { UpdateMatchingServicesDto } from "./dto/update-matching-services.dto";
 import { MatchingService } from './schemas/matchingservices.schema';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 
 @Controller("matching-service")
 export class MatchingServiceController {
-  constructor(private readonly matchingService: MatchingServicesService,
-    @InjectQueue('matching-service') private readonly msQueue: Queue) { }
+  constructor(private readonly matchingservice: MatchingServicesService) { }
 
+  /**
+   * Create a new matching service.
+   * @param CreateMatchingServiceDto - The data for creating a matching service.
+   * @returns The created matching service.
+   */
   @Post()
   async create(@Body() CreateMatchingServiceDto: CreateMatchingServicesDto) {
-    const newMatchingService = await this.matchingService.create(CreateMatchingServiceDto);
-    await this.msQueue.add('process', newMatchingService,
-      { attempts: 3, backoff: 1000, removeOnComplete: true });
-    return newMatchingService;
+    return this.matchingservice.create(CreateMatchingServiceDto);
   }
 
   /**
@@ -25,13 +24,7 @@ export class MatchingServiceController {
    */
   @Get()
   async findAll(): Promise<MatchingService[]> {
-    return this.matchingService.findAll();
-  }
-
-  @Get('queue')
-  async getJobs() {
-    const jobs = await this.msQueue.getJobs(['active', 'completed', 'failed', 'delayed', 'waiting', 'paused']);
-    return jobs.map(job => job.data);
+    return this.matchingservice.findAll();
   }
 
   /**
@@ -41,9 +34,8 @@ export class MatchingServiceController {
    */
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<MatchingService | null> {
-    return this.matchingService.findOne(id);
+    return this.matchingservice.findOne(id);
   }
-
 
   /**
    * Update a matching service by ID.
@@ -53,7 +45,7 @@ export class MatchingServiceController {
    */
   @Put(':id')
   async update(@Param('id') id: number, @Body() updateDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
-    return this.matchingService.update(id, updateDto);
+    return this.matchingservice.update(id, updateDto);
   }
 
   /**
@@ -62,6 +54,6 @@ export class MatchingServiceController {
    */
   @Delete(':id')
   async delete(@Param('id') id: number) {
-    return this.matchingService.delete(id);
+    return this.matchingservice.delete(id);
   }
 }
