@@ -4,6 +4,8 @@ import { MatchingServicesService } from './matchingservices.service';
 import { MatchingService, MatchingServicesSchema } from './schemas/matchingservices.schema';
 import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { BullModule } from '@nestjs/bull';
+import { ProcessConsumer } from './matchingservices.processor';
 
 @Module({
   imports: [
@@ -19,8 +21,13 @@ import { Connection } from 'mongoose';
         inject: [getConnectionToken()],
       },
     ]),
+    BullModule.registerQueueAsync(
+      {
+        name: 'process',
+      },
+    )
   ],
   controllers: [MatchingServiceController],
-  providers: [MatchingServicesService],
+  providers: [MatchingServicesService,ProcessConsumer],
 })
 export class MatchingServicesModule { }
