@@ -1,4 +1,4 @@
-FROM docker.io/node:lts
+FROM docker.io/node:20
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
