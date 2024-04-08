@@ -47,7 +47,7 @@ export const Header: React.FC<LayoutHeaderProps> = ({
   const { data: user } = useGetIdentity<IUser>();
 
   return (
-    <AppBar position={sticky ? "sticky" : "relative"}>
+    <AppBar id="app-bar" position={sticky ? "sticky" : "relative"}>
       <Toolbar>
         <Stack direction="row" width="100%" alignItems="center">
           {showHamburger && <HamburgerMenu />}

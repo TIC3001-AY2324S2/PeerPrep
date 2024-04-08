@@ -2,6 +2,12 @@ import { AuthBindings } from "@refinedev/core";
 
 export const TOKEN_KEY = "refine-auth";
 
+export type IIdentity = {
+  id: number;
+  name: string;
+  avatar: string;
+};
+
 export const authProvider: AuthBindings = {
   login: async ({ username, email, password }) => {
     if ((username || email) && password) {
@@ -46,9 +52,9 @@ export const authProvider: AuthBindings = {
     if (token) {
       return {
         id: 1,
-        name: "John Doe",
+        name: "John Doe " + Math.floor(Math.random() * 100),
         avatar: "https://i.pravatar.cc/300",
-      };
+      } as IIdentity;
     }
     return null;
   },
