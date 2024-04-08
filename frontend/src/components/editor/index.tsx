@@ -11,7 +11,10 @@ import * as random from 'lib0/random'
 import { ColorModeContext } from "../../contexts/color-mode";
 
 type EditorProps = {
+  id?: string;
+  username?: string;
   rootName: string;
+  minHeight: string;
 };
 
 const usercolors = [
@@ -23,12 +26,15 @@ const usercolors = [
   { color: '#9ac2c9', light: '#9ac2c933' },
   { color: '#8acb88', light: '#8acb8833' },
   { color: '#1be7ff', light: '#1be7ff33' }
-]
+];
 
-const userColor = usercolors[random.uint32() % usercolors.length]
+const userColor = usercolors[random.uint32() % usercolors.length];
 
 export const Editor: React.FC<EditorProps> = ({
-  rootName
+  id,
+  username = 'Anonymous ' + Math.floor(Math.random() * 100),
+  rootName,
+  minHeight,
 }) => {
   const { mode } = useContext(ColorModeContext);
   const editor = useRef(null);
@@ -38,14 +44,21 @@ export const Editor: React.FC<EditorProps> = ({
     `ws${location.protocol.slice(4)}//${location.hostname}:3004/ws/yjs?`,
     rootName,
     ydoc,
-  )
-  const ytext = ydoc.getText('codemirror')
+  );
+  const ytext = ydoc.getText('codemirror');
 
   provider.awareness.setLocalStateField('user', {
-    name: 'Anonymous ' + Math.floor(Math.random() * 100),
+    name: username,
     color: userColor.color,
     colorLight: userColor.light
-  })
+  });
+
+  const customTheme = EditorView.theme({
+    ".cm-content": {
+      padding: "1em 0", // https://github.com/yjs/y-codemirror.next/issues/24
+      minHeight,
+    },
+  });
 
   const state = EditorState.create({
     doc: ytext.toString(),
@@ -57,17 +70,20 @@ export const Editor: React.FC<EditorProps> = ({
       javascript(),
       yCollab(ytext, provider.awareness),
       ...(mode === "dark" ? [oneDark] : []),
+      customTheme,
     ]
-  })
+  });
 
   useEffect(() => {
     const view = new EditorView({ state, parent: editor.current ?? undefined });
+
     return () => {
+      provider.destroy();
       view.destroy();
     };
   });
 
   return (
-    <div ref={editor} />
+    <div {...(id && { id })} ref={editor} />
   );
 };
