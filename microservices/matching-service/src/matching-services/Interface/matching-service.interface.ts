@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
 export interface MatchingServices extends Document {
   readonly matching_service_id: number;
