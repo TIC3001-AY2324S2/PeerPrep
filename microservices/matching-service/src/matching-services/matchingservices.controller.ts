@@ -3,10 +3,14 @@ import { MatchingServicesService } from "./matchingservices.service";
 import { CreateMatchingServicesDto } from "./dto/create-matching-services.dto";
 import { UpdateMatchingServicesDto } from "./dto/update-matching-services.dto";
 import { MatchingService } from './schemas/matchingservices.schema';
+import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
 
 @Controller("matching-service")
 export class MatchingServiceController {
-  constructor(private readonly matchingservice: MatchingServicesService) { }
+  constructor(private readonly matchingservice: MatchingServicesService,
+    @InjectQueue('process') private readonly msQueue: Queue,
+  ) { }
 
   /**
    * Create a new matching service.
@@ -15,6 +19,7 @@ export class MatchingServiceController {
    */
   @Post()
   async create(@Body() CreateMatchingServiceDto: CreateMatchingServicesDto) {
+    await this.msQueue.add('process', { data: CreateMatchingServiceDto });
     return this.matchingservice.create(CreateMatchingServiceDto);
   }
 
@@ -44,8 +49,8 @@ export class MatchingServiceController {
    * @returns A promise that resolves to the updated matching service, or null if not found.
    */
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateMatchingServiceDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
-    return this.matchingservice.update(id, updateMatchingServiceDto);
+  async update(@Param('id') id: number, @Body() updateDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
+    return this.matchingservice.update(id, updateDto);
   }
 
   /**

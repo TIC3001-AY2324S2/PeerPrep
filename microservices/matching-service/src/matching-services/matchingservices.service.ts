@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from '@nestjs/mongoose';
 import { MatchingService } from './schemas/matchingservices.schema';
 import { CreateMatchingServicesDto } from './dto/create-matching-services.dto';
+import { UpdateMatchingServicesDto } from "./dto/update-matching-services.dto";
 
 @Injectable()
 export class MatchingServicesService {
@@ -48,9 +49,9 @@ export class MatchingServicesService {
    * @param matching_service - The updated matching service data.
    * @returns The updated matching service, or null if not found.
    */
-  async update(matching_service_id: number, matching_service: MatchingService): Promise<MatchingService | null> {
+  async update(matching_service_id: number, updateDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
     console.log(`Updating service with ID: ${matching_service_id}`);
-    const UpdateMatchingService = this.msModel.findOneAndUpdate({ matching_service_id }, matching_service, { new: true }).exec();
+    const UpdateMatchingService = this.msModel.findOneAndUpdate({ matching_service_id }, { ...updateDto, modified_at: Date.now() + (8 * 60 * 60 * 1000) }, { new: true }).exec();
     console.log('Update service:', UpdateMatchingService);
     return UpdateMatchingService;
   }
