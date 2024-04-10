@@ -13,9 +13,12 @@ import routerBindings, {
   DocumentTitleHandler,
   NavigateToResource,
   UnsavedChangesNotifier,
+  useDocumentTitle,
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { appConfig } from "./config";
+import { axiosInstance } from "./axios";
 import { authProvider } from "./authProvider";
 import { Layout } from "./components/layout";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -37,6 +40,8 @@ import { Register } from "./pages/register";
 import { Collaboration } from "./pages/collaborations";
 
 function App() {
+  useDocumentTitle("PeerPrep");
+
   return (
     <BrowserRouter>
       <ColorModeContextProvider>
@@ -44,7 +49,10 @@ function App() {
         <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
         <RefineSnackbarProvider>
           <Refine
-            dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+            dataProvider={{
+              default: dataProvider(appConfig.userService.endpoint, axiosInstance),
+              refineFake: dataProvider("https://api.fake-rest.refine.dev", axiosInstance),
+            }}
             notificationProvider={notificationProvider}
             routerProvider={routerBindings}
             authProvider={authProvider}
@@ -57,6 +65,7 @@ function App() {
                 show: "/blog-posts/show/:id",
                 meta: {
                   canDelete: true,
+                  dataProviderName: "refineFake",
                 },
               },
               {
@@ -67,6 +76,7 @@ function App() {
                 show: "/categories/show/:id",
                 meta: {
                   canDelete: true,
+                  dataProviderName: "refineFake",
                 },
               },
             ]}
