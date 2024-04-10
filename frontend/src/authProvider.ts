@@ -1,15 +1,40 @@
-import { AuthBindings } from "@refinedev/core";
+import { AuthProvider } from "@refinedev/core";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { appConfig } from "./config";
+import { axiosInstance } from "./axios";
 
-export const TOKEN_KEY = "refine-auth";
+export type IIdentity = {
+  id: number;
+  name: string;
+  avatar?: string;
+};
 
-export const authProvider: AuthBindings = {
+type ExtendedJwtPayload = {
+  username: string;
+  email: string;
+  isAdmin: boolean;
+} & JwtPayload;
+
+export const TOKEN_KEY = "auth-token";
+
+export const authProvider: AuthProvider = {
   login: async ({ username, email, password }) => {
     if ((username || email) && password) {
-      localStorage.setItem(TOKEN_KEY, username);
-      return {
-        success: true,
-        redirectTo: "/",
-      };
+      const response = await axiosInstance.post(
+        appConfig.userService.loginEndpoint,
+        {
+          email,
+          password
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        const accessToken = response.data.accessToken;
+        sessionStorage.setItem(TOKEN_KEY, accessToken);
+        return {
+          success: true,
+          redirectTo: "/",
+        };
+      }
     }
 
     return {
@@ -21,14 +46,14 @@ export const authProvider: AuthBindings = {
     };
   },
   logout: async () => {
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     return {
       success: true,
       redirectTo: "/login",
     };
   },
   check: async () => {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = sessionStorage.getItem(TOKEN_KEY);
     if (token) {
       return {
         authenticated: true,
@@ -40,15 +65,24 @@ export const authProvider: AuthBindings = {
       redirectTo: "/login",
     };
   },
-  getPermissions: async () => null,
-  getIdentity: async () => {
-    const token = localStorage.getItem(TOKEN_KEY);
+  getPermissions: async () => {
+    const token = sessionStorage.getItem(TOKEN_KEY);
     if (token) {
+      const decodedAccessToken = jwtDecode(token ?? "") as ExtendedJwtPayload;
+      return {
+        isAdmin: decodedAccessToken.isAdmin,
+      };
+    }
+    return null;
+  },
+  getIdentity: async () => {
+    const token = sessionStorage.getItem(TOKEN_KEY);
+    if (token) {
+      const decodedAccessToken = jwtDecode(token ?? "") as ExtendedJwtPayload;
       return {
         id: 1,
-        name: "John Doe",
-        avatar: "https://i.pravatar.cc/300",
-      };
+        name: decodedAccessToken.username,
+      } as IIdentity;
     }
     return null;
   },
