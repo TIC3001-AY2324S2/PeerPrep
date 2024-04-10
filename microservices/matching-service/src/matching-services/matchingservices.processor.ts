@@ -1,12 +1,12 @@
-import { Job } from 'bull';
-import { Process, Processor } from '@nestjs/bull';
+import { Job } from "bull";
+import { Process, Processor } from "@nestjs/bull";
 
-@Processor('process')
+@Processor("process")
 export class ProcessConsumer {
-  @Process('process')
+  @Process("process")
   handleTranscode(job: Job) {
-    console.log('Processing matching service...');
+    console.log("Processing matching service...");
     console.log(job.data);
-    console.log('completed!!');
+    console.log("completed!!");
   }
 }

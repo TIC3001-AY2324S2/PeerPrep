@@ -1,11 +1,10 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
 
 export type MatchingServicesDocument = HydratedDocument<MatchingService>;
 
 @Schema()
 export class MatchingService {
-
   @Prop({ required: true })
   email: string;
 
@@ -15,17 +14,24 @@ export class MatchingService {
   @Prop({ required: true })
   category: string;
 
-  @Prop({ required: true, default: () => new Date(Date.now() + (8 * 60 * 60 * 1000) + 30000) })
+  @Prop({
+    required: true,
+    default: () => new Date(Date.now() + 8 * 60 * 60 * 1000 + 30000),
+  })
   expired_at: Date;
 
-  @Prop({ required: true, default: 'active' })
+  @Prop({ required: true, default: "active" })
   status: string;
 
-  @Prop({ required: true, default: () => new Date(Date.now() + (8 * 60 * 60 * 1000)) })
+  @Prop({
+    required: true,
+    default: () => new Date(Date.now() + 8 * 60 * 60 * 1000),
+  })
   created_at: Date;
 
   @Prop()
   modified_at: Date;
 }
 
-export const MatchingServicesSchema = SchemaFactory.createForClass(MatchingService);
+export const MatchingServicesSchema =
+  SchemaFactory.createForClass(MatchingService);

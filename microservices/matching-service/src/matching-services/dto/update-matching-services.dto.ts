@@ -7,7 +7,6 @@ import {
 } from "class-validator";
 
 export class UpdateMatchingServicesDto {
-
   @IsOptional()
   @IsEmail()
   email: string;

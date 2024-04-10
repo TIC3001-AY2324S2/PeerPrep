@@ -7,7 +7,6 @@ import {
 } from "class-validator";
 
 export class CreateMatchingServicesDto {
-
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -22,5 +21,4 @@ export class CreateMatchingServicesDto {
   @IsOptional()
   @IsDateString()
   expired_at: Date;
-
 }
