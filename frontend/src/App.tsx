@@ -8,6 +8,7 @@ import {
 
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
+import { ThemeProvider } from "@mui/material";
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
@@ -31,10 +32,16 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
+import {
+  MatchRequestList,
+  MatchingRequestForm,
+} from "./pages/matches";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import { Collaboration } from "./pages/collaborations";
+// import { MatchingRequestForm } from "./pages/matches";
+// import { MatchRequestList } from "./pages/matches/matchShow";
 
 function App() {
   return (
@@ -69,6 +76,16 @@ function App() {
                   canDelete: true,
                 },
               },
+              {
+                name: "matches",
+                list: "/matches",
+                create: "/matches/create",
+                edit: "/matches/edit/:id",
+                show: "/matches/show/:id",
+                meta: {
+                  canDelete: true,
+                },
+              },
             ]}
             options={{
               disableTelemetry: true,
@@ -95,6 +112,8 @@ function App() {
                   index
                   element={<NavigateToResource resource="blog_posts" />}
                 />
+                <Route path="/matches" element={<MatchRequestList />} />
+                {/* <Route path="/matching-request" element={<MatchingRequestForm />} /> */}
                 <Route path="/collaborate" element={<Collaboration />} />
                 <Route path="/blog-posts">
                   <Route index element={<BlogPostList />} />
@@ -105,6 +124,12 @@ function App() {
                 <Route path="/categories">
                   <Route index element={<CategoryList />} />
                   <Route path="create" element={<CategoryCreate />} />
+                  <Route path="edit/:id" element={<CategoryEdit />} />
+                  <Route path="show/:id" element={<CategoryShow />} />
+                </Route>
+                <Route path="/matches">
+                  <Route index element={<MatchRequestList />} />
+                  <Route path="create" element={<MatchingRequestForm />} />
                   <Route path="edit/:id" element={<CategoryEdit />} />
                   <Route path="show/:id" element={<CategoryShow />} />
                 </Route>
@@ -127,6 +152,7 @@ function App() {
                   element={<ForgotPassword />}
                 />
               </Route>
+              
             </Routes>
 
             <UnsavedChangesNotifier />
