@@ -69,9 +69,7 @@ export const authProvider: AuthProvider = {
     const token = sessionStorage.getItem(TOKEN_KEY);
     if (token) {
       const decodedAccessToken = jwtDecode(token ?? "") as ExtendedJwtPayload;
-      return {
-        isAdmin: decodedAccessToken.isAdmin,
-      };
+      return decodedAccessToken.isAdmin ? ["admin"] : [];
     }
     return null;
   },

@@ -17,9 +17,10 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { appConfig } from "./config";
-import { axiosInstance } from "./axios";
+import PeopleIcon from '@mui/icons-material/People';
+import { userDataProvider } from "./dataProviders";
 import { authProvider } from "./authProvider";
+import { accessControlProvider } from "./accessControlProvider";
 import { Layout } from "./components/layout";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import {
@@ -38,6 +39,12 @@ import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import { Collaboration } from "./pages/collaborations";
+import {
+  UserCreate,
+  UserEdit,
+  UserList,
+  UserShow,
+} from "./pages/users";
 
 function App() {
   useDocumentTitle("PeerPrep");
@@ -50,13 +57,30 @@ function App() {
         <RefineSnackbarProvider>
           <Refine
             dataProvider={{
-              default: dataProvider(appConfig.userService.endpoint, axiosInstance),
-              refineFake: dataProvider("https://api.fake-rest.refine.dev", axiosInstance),
+              default: userDataProvider,
+              refineFake: dataProvider("https://api.fake-rest.refine.dev"),
             }}
             notificationProvider={notificationProvider}
             routerProvider={routerBindings}
             authProvider={authProvider}
+            accessControlProvider={accessControlProvider}
             resources={[
+              {
+                name: "users",
+                list: "/users",
+                create: "/users/create",
+                edit: "/users/edit/:id",
+                show: "/users/show/:id",
+                meta: {
+                  icon: <PeopleIcon />,
+                  requiredPermissions: {
+                    list: ["admin"],
+                    create: ["admin"],
+                    edit: ["admin"],
+                    show: ["admin"],
+                  }
+                }
+              },
               {
                 name: "blog_posts",
                 list: "/blog-posts",
@@ -105,6 +129,12 @@ function App() {
                   index
                   element={<NavigateToResource resource="blog_posts" />}
                 />
+                <Route path="/users">
+                  <Route index element={<UserList />} />
+                  <Route path="create" element={<UserCreate />} />
+                  <Route path="edit/:id" element={<UserEdit />} />
+                  <Route path="show/:id" element={<UserShow />} />
+                </Route>
                 <Route path="/collaborate" element={<Collaboration />} />
                 <Route path="/blog-posts">
                   <Route index element={<BlogPostList />} />
