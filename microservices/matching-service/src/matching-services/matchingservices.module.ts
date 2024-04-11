@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
-import { MatchingServiceController } from "./matchingservices.controller";
+import { MatchingServicesController } from "./matchingservices.controller";
+import { QueueController } from "./queue.controller";
 import { MatchingServicesService } from "./matchingservices.service";
 import {
   MatchingService,
@@ -9,7 +10,14 @@ import { getConnectionToken, MongooseModule } from "@nestjs/mongoose";
 import { Connection } from "mongoose";
 import { BullModule } from "@nestjs/bull";
 import { ProcessConsumer } from "./matchingservices.processor";
+import { HttpModule } from '@nestjs/axios';
+import { ExternalServicesService } from "./external-services.service";
 
+/**
+ * Represents the module for the matching services in the application.
+ * This module is responsible for importing the necessary dependencies,
+ * defining the controllers and providers, and configuring the matching services.
+ */
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
@@ -27,8 +35,9 @@ import { ProcessConsumer } from "./matchingservices.processor";
     BullModule.registerQueueAsync({
       name: "process",
     }),
+    HttpModule
   ],
-  controllers: [MatchingServiceController],
-  providers: [MatchingServicesService, ProcessConsumer],
+  controllers: [MatchingServicesController, QueueController],
+  providers: [MatchingServicesService, ProcessConsumer, ExternalServicesService],
 })
 export class MatchingServicesModule {}

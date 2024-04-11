@@ -6,71 +6,54 @@ import {
   Param,
   Post,
   Put,
-} from "@nestjs/common";
-import { MatchingServicesService } from "./matchingservices.service";
-import { CreateMatchingServicesDto } from "./dto/create-matching-services.dto";
-import { UpdateMatchingServicesDto } from "./dto/update-matching-services.dto";
-import { MatchingService } from "./schemas/matchingservices.schema";
-import { Queue } from "bull";
+} from '@nestjs/common';
+import { CreateMatchingServicesDto } from './dto/create-matching-services.dto';
+import { UpdateMatchingServicesDto } from './dto/update-matching-services.dto';
+import { MatchingServicesService } from './matchingservices.service';
+import { MatchingService } from './schemas/matchingservices.schema';
 import { InjectQueue } from "@nestjs/bull";
+import { Queue } from "bull";
 
-@Controller("matching-service")
-export class MatchingServiceController {
-  constructor(
-    private readonly matchingservice: MatchingServicesService,
+@Controller('matching-services')
+export class MatchingServicesController {
+  constructor(private readonly matchingServicesService: MatchingServicesService,
     @InjectQueue("process") private readonly msQueue: Queue,
-  ) {}
+  ) { }
 
-  /**
-   * Create a new matching service.
-   * @param CreateMatchingServiceDto - The data for creating a matching service.
-   * @returns The created matching service.
-   */
-  @Post()
-  async create(@Body() CreateMatchingServiceDto: CreateMatchingServicesDto) {
-    await this.msQueue.add("process", { data: CreateMatchingServiceDto });
-    return this.matchingservice.create(CreateMatchingServiceDto);
-  }
+    @Post()
+    async create(@Body() createMatchingServicesDto: CreateMatchingServicesDto) {
+      try {
+        await this.msQueue.add('process', { ...createMatchingServicesDto });
+      } catch (error) {
+        if (error.message !== 'Job already exists') {
+          throw error;
+        }
+      }
+      return this.matchingServicesService.create(createMatchingServicesDto);
+    }
 
-  /**
-   * Get all matching services.
-   * @returns A promise that resolves to an array of matching services.
-   */
-  @Get()
-  async findAll(): Promise<MatchingService[]> {
-    return this.matchingservice.findAll();
-  }
+    @Get()
+    async findAll(): Promise<MatchingService[]> {
+      return this.matchingServicesService.findAll();
+    }
 
-  /**
-   * Get a matching service by ID.
-   * @param id - The ID of the matching service.
-   * @returns A promise that resolves to the matching service, or null if not found.
-   */
-  @Get(":id")
-  async findOne(@Param("id") id: number): Promise<MatchingService | null> {
-    return this.matchingservice.findOne(id);
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: string): Promise<MatchingService | null> {
+      return this.matchingServicesService.findOne(id);
+    }
 
-  /**
-   * Update a matching service by ID.
-   * @param id - The ID of the matching service to update.
-   * @param updateMatchingServiceDto - The data for updating the matching service.
-   * @returns A promise that resolves to the updated matching service, or null if not found.
-   */
-  @Put(":id")
-  async update(
-    @Param("id") id: number,
-    @Body() updateDto: UpdateMatchingServicesDto,
-  ): Promise<MatchingService | null> {
-    return this.matchingservice.update(id, updateDto);
-  }
+    @Put(':id')
+    async update(@Param('id') id: string, @Body() updateDto: UpdateMatchingServicesDto): Promise<MatchingService | null> {
+      return this.matchingServicesService.update(id, updateDto);
+    }
 
-  /**
-   * Delete a matching service by ID.
-   * @param id - The ID of the matching service to delete.
-   */
-  @Delete(":id")
-  async delete(@Param("id") id: number) {
-    return this.matchingservice.delete(id);
+    @Delete(':id')
+    async delete(@Param('id') id: string) {
+      return this.matchingServicesService.delete(id);
+    }
+
+    @Delete()
+    async deleteAll() {
+      return this.matchingServicesService.removeAll();
+    }
   }
-}
