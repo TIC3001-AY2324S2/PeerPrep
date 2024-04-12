@@ -35,16 +35,19 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
-import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
-import { Collaboration } from "./pages/collaborations";
+import {
+  MyAccountShow,
+  MyAccountEdit,
+} from "./pages/my-account";
 import {
   UserCreate,
   UserEdit,
   UserList,
   UserShow,
 } from "./pages/users";
+import { Collaboration } from "./pages/collaborations";
 
 function App() {
   useDocumentTitle("PeerPrep");
@@ -129,6 +132,10 @@ function App() {
                   index
                   element={<NavigateToResource resource="blog_posts" />}
                 />
+                <Route path="/my-account">
+                  <Route index element={<MyAccountShow />} />
+                  <Route path="edit" element={<MyAccountEdit />} />
+                </Route>
                 <Route path="/users">
                   <Route index element={<UserList />} />
                   <Route path="create" element={<UserCreate />} />
@@ -162,10 +169,6 @@ function App() {
               >
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route
-                  path="/forgot-password"
-                  element={<ForgotPassword />}
-                />
               </Route>
             </Routes>
 

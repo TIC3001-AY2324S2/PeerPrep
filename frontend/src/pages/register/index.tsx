@@ -1,11 +1,13 @@
 import { useCustomMutation, RegisterFormTypes } from "@refinedev/core";
 import { AuthPage } from "@refinedev/mui";
+import { Title } from "../../components/layout/title";
 import { appConfig } from "../../config";
 
 export const Register = () => {
   const { mutate } = useCustomMutation();
   return <AuthPage
     type="register"
+    title={<Title collapsed={false} />}
     formProps={{
       onSubmit: (values: RegisterFormTypes) => {
         mutate({
