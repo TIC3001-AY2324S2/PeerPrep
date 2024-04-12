@@ -18,12 +18,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-
-type IUser = {
-  id: number;
-  name: string;
-  avatar: string;
-};
+import { IUser } from "../types";
 
 export function AccountMenu() {
   const { data: user } = useGetIdentity<IUser>();
@@ -62,7 +57,7 @@ export function AccountMenu() {
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title={user?.name}>
+        <Tooltip title={user?.username}>
           <IconButton
             onClick={handleClick}
             size="small"
@@ -71,7 +66,7 @@ export function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar {...stringAvatar(user?.name ?? "")} />
+            <Avatar {...stringAvatar(user?.username ?? "")} />
           </IconButton>
         </Tooltip>
       </Box>

@@ -19,6 +19,7 @@
     "@refinedev/react-router-v6": "^4.5.5",
     "@refinedev/simple-rest": "^5.0.1",
     "codemirror": "^6.0.1",
+    "formik": "^2.4.5",
     "jwt-decode": "^4.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -27,7 +28,8 @@
     "react-use": "^17.5.0",
     "y-codemirror.next": "^0.3.3",
     "y-websocket": "^2.0.2",
-    "yjs": "^13.6.14"
+    "yjs": "^13.6.14",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.5",
@@ -43,6 +45,7 @@
     "vite": "^5.2.8"
   },
   "scripts": {
+    "start": "refine dev",
     "dev": "refine dev",
     "build": "tsc && refine build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

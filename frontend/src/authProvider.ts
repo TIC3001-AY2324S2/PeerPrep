@@ -2,12 +2,7 @@ import { AuthProvider } from "@refinedev/core";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { appConfig } from "./config";
 import { axiosInstance } from "./axios";
-
-export type IIdentity = {
-  id: number;
-  name: string;
-  avatar?: string;
-};
+import { IUser } from "./components/layout/types";
 
 type ExtendedJwtPayload = {
   username: string;
@@ -69,9 +64,7 @@ export const authProvider: AuthProvider = {
     const token = sessionStorage.getItem(TOKEN_KEY);
     if (token) {
       const decodedAccessToken = jwtDecode(token ?? "") as ExtendedJwtPayload;
-      return {
-        isAdmin: decodedAccessToken.isAdmin,
-      };
+      return decodedAccessToken.isAdmin ? ["admin"] : [];
     }
     return null;
   },
@@ -80,9 +73,9 @@ export const authProvider: AuthProvider = {
     if (token) {
       const decodedAccessToken = jwtDecode(token ?? "") as ExtendedJwtPayload;
       return {
-        id: 1,
-        name: decodedAccessToken.username,
-      } as IIdentity;
+        username: decodedAccessToken.username,
+        email: decodedAccessToken.email,
+      } as IUser;
     }
     return null;
   },
