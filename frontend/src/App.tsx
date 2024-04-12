@@ -49,7 +49,12 @@ import {
   UserShow,
 } from "./pages/users";
 import { Collaboration } from "./pages/collaborations";
-
+import {
+  MatchRequestEditForm,
+  MatchRequestList,
+  MatchRequestForm,
+  MatchShow
+} from "./pages/matches";
 
 function App() {
   useDocumentTitle("PeerPrep");
@@ -203,7 +208,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
               </Route>
-              
+
             </Routes>
 
             <UnsavedChangesNotifier />
