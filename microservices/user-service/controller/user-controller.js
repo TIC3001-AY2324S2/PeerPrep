@@ -75,7 +75,7 @@ export async function deleteUser(req, res) {
 
 export async function getUserByEmail(req, res) {
   try {
-    const { email } = req.body;
+    const { email } = { ...req.query, ...req.body };
     if (email) {
       console.log(`GET USER: Email Obtained: ${email}`);
       const response = await _findUserByEmail(email);

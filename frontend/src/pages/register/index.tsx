@@ -1,5 +1,37 @@
+import { useCustomMutation, RegisterFormTypes } from "@refinedev/core";
 import { AuthPage } from "@refinedev/mui";
+import { appConfig } from "../../config";
 
 export const Register = () => {
-  return <AuthPage type="register" />;
+  const { mutate } = useCustomMutation();
+  return <AuthPage
+    type="register"
+    formProps={{
+      onSubmit: (values: RegisterFormTypes) => {
+        mutate({
+          url: appConfig.userService.createEndpoint,
+          method: "post",
+          values: {
+            username: values.email,
+            email: values.email,
+            password: values.password,
+          },
+          successNotification: () => {
+            return {
+              message: "User registration successful.",
+              description: "Success",
+              type: "success",
+            };
+          },
+          errorNotification: () => {
+            return {
+              message: "User registration failed.",
+              description: "Error",
+              type: "error",
+            };
+          },
+        })
+      },
+    }}
+  />;
 };
