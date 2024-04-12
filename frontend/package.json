@@ -19,11 +19,8 @@
     "@refinedev/react-router-v6": "^4.5.5",
     "@refinedev/simple-rest": "^5.0.1",
     "codemirror": "^6.0.1",
-<<<<<<< HEAD
     "formik": "^2.4.5",
-=======
     "jwt-decode": "^4.0.0",
->>>>>>> 00b43b88b3572be85a5e3be947ecf61b30b953da
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.30.0",
