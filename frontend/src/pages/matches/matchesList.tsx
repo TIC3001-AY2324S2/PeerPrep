@@ -5,6 +5,12 @@ import React from "react";
 export const MatchRequestList = () => {
   const { dataGridProps } = useDataGrid({ resource: 'match_request' });
 
+  const dummyMatchRequests = [
+    { id: 1, email: 'dummy1@example.com', difficulty: 'Easy', category: 'Math', status: 'Pending' },
+    { id: 2, email: 'dummy2@example.com', difficulty: 'Medium', category: 'Science', status: 'Approved' },
+    { id: 3, email: 'dummy3@example.com', difficulty: 'Hard', category: 'History', status: 'Rejected' },
+  ];
+
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -55,7 +61,8 @@ export const MatchRequestList = () => {
 
   return (
     <List>
-      <DataGrid {...dataGridProps} columns={columns} autoHeight />
+      {/* <DataGrid {...dataGridProps} columns={columns} autoHeight /> */}
+      <DataGrid {...dataGridProps} columns={columns} rows={dummyMatchRequests} autoHeight />
     </List>
   );
 };

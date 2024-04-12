@@ -10,7 +10,7 @@ interface FormValues {
   time_limit?: string;
 }
 
-const MatchingRequestForm: React.FC = () => {
+const MatchRequestForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState('');
 
@@ -108,4 +108,7 @@ const MatchingRequestForm: React.FC = () => {
   );
 };
 
-export default MatchingRequestForm;
+export default MatchRequestForm;
+
+
+

@@ -36,18 +36,34 @@ import {
   CategoryShow,
 } from "./pages/categories";
 import {
+  MatchRequestEditForm,
   MatchRequestList,
-  MatchingRequestForm,
+  MatchRequestForm,
+  MatchShow
 } from "./pages/matches";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import { Collaboration } from "./pages/collaborations";
-// import { MatchingRequestForm } from "./pages/matches";
-// import { MatchRequestList } from "./pages/matches/matchShow";
+
 
 function App() {
   useDocumentTitle("PeerPrep");
+
+  interface MatchRequest {
+    id: number;
+    difficulty: string;
+    category: string;
+    time_limit?: string;
+    status?: string;
+  }
+
+  const matchRequest:  MatchRequest= {
+    id: 1,
+    difficulty: 'easy',
+    category: 'Programming',
+    time_limit: '60 minutes',
+  };
 
   return (
     <BrowserRouter>
@@ -139,9 +155,9 @@ function App() {
                 </Route>
                 <Route path="/matches">
                   <Route index element={<MatchRequestList />} />
-                  <Route path="create" element={<MatchingRequestForm />} />
-                  <Route path="edit/:id" element={<CategoryEdit />} />
-                  <Route path="show/:id" element={<CategoryShow />} />
+                  <Route path="create" element={<MatchRequestForm />} />
+                  <Route path="edit/:id" element={<MatchRequestEditForm matchRequest={matchRequest}/>} />
+                  <Route path="show/:id" element={<MatchShow />} />
                 </Route>
                 <Route path="*" element={<ErrorComponent />} />
               </Route>
