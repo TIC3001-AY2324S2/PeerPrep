@@ -27,4 +27,5 @@ export class MatchingService {
   category: string;
 }
 
-export const MatchingServicesSchema = SchemaFactory.createForClass(MatchingService);
+export const MatchingServicesSchema =
+  SchemaFactory.createForClass(MatchingService);

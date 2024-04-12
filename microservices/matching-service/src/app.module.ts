@@ -2,19 +2,44 @@ import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { BullModule } from "@nestjs/bull";
 import { MatchingServicesModule } from "./matching-services/matchingservices.module";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
+/**
+ * Represents the main module of the application.
+ */
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      "mongodb+srv://e0894539:NGJLg8XLeHTECcrj@peerprepcluster.akgyqbp.mongodb.net/?retryWrites=true&w=majority&appName=PeerprepCluster",
-    ),
+    /**
+     * Imports the ConfigModule to load configuration variables.
+     */
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    /**
+     * Imports the MongooseModule to connect to MongoDB database.
+     */
+    MongooseModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>("MONGODB_URI"),
+      }),
+      inject: [ConfigService],
+    }),
+    /**
+     * Imports the MatchingServicesModule to provide matching services.
+     */
     MatchingServicesModule,
-    BullModule.forRoot({
-      redis: {
-        host: "redis-10885.c252.ap-southeast-1-1.ec2.cloud.redislabs.com",
-        port: 10885,
-        password: "VQ2EDj41UFJUb900AwbyLXx4drrcZSk4",
-      },
+    /**
+     * Imports the BullModule to provide job queue functionality using Redis.
+     */
+    BullModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        redis: {
+          host: configService.get<string>("REDIS_HOST"),
+          port: +configService.get<number>("REDIS_PORT", 6379)!,
+          password: configService.get<string>("REDIS_PASS"),
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
 })

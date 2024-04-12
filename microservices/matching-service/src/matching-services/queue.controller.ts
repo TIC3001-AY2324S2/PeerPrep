@@ -4,22 +4,31 @@ import {
   Get,
   NotFoundException,
   Param,
-} from '@nestjs/common';
-import { Queue } from 'bull';
-import { InjectQueue } from '@nestjs/bull';
+} from "@nestjs/common";
+import { Queue } from "bull";
+import { InjectQueue } from "@nestjs/bull";
 
-@Controller('queue')
+@Controller("queue")
 export class QueueController {
-  constructor(@InjectQueue('process') private readonly queue: Queue) { }
+  constructor(@InjectQueue("process") private readonly queue: Queue) {}
 
   /**
    * Retrieves all jobs in the queue.
-   * @returns A promise that resolves to an array of jobs with their respective states.
+   * @returns A promise that resolves to an array of jobs and their states.
    */
   @Get()
   async getQueueJobs() {
-    const jobs = await this.queue.getJobs(['active', 'completed', 'failed', 'waiting', 'delayed', 'paused']);
-    return Promise.all(jobs.map(async (job) => ({ job, state: await job.getState() })));
+    const jobs = await this.queue.getJobs([
+      "active",
+      "completed",
+      "failed",
+      "waiting",
+      "delayed",
+      "paused",
+    ]);
+    return Promise.all(
+      jobs.map(async (job) => ({ job, state: await job.getState() })),
+    );
   }
 
   /**
@@ -28,8 +37,8 @@ export class QueueController {
    * @returns A promise that resolves to the job and its state.
    * @throws NotFoundException if the job with the specified ID is not found.
    */
-  @Get(':id')
-  async getQueueJob(@Param('id') id: string) {
+  @Get(":id")
+  async getQueueJob(@Param("id") id: string) {
     const job = await this.queue.getJob(id);
     if (!job) {
       throw new NotFoundException(`Job with ID ${id} not found`);
@@ -43,8 +52,8 @@ export class QueueController {
    * @returns A promise that resolves to a message indicating the job has been removed.
    * @throws NotFoundException if the job with the specified ID is not found.
    */
-  @Delete(':id')
-  async deleteQueueJob(@Param('id') id: string) {
+  @Delete(":id")
+  async deleteQueueJob(@Param("id") id: string) {
     const job = await this.queue.getJob(id);
     if (!job) {
       throw new NotFoundException(`Job with ID ${id} not found`);
@@ -55,12 +64,12 @@ export class QueueController {
 
   /**
    * Empties the entire queue.
-   * @returns A promise that resolves to a message indicating all jobs have been removed from the queue.
+   * @returns A promise that resolves to a message indicating all jobs have been removed.
    */
   @Delete()
   async emptyQueue() {
     await this.queue.empty();
-    await this.queue.clean(1000, 'failed');
-    return { message: 'All jobs have been removed from the queue' };
+    await this.queue.clean(1000, "failed");
+    return { message: "All jobs have been removed from the queue" };
   }
 }

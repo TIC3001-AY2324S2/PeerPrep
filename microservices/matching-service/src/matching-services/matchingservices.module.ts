@@ -10,13 +10,13 @@ import { getConnectionToken, MongooseModule } from "@nestjs/mongoose";
 import { Connection } from "mongoose";
 import { BullModule } from "@nestjs/bull";
 import { ProcessConsumer } from "./matchingservices.processor";
-import { HttpModule } from '@nestjs/axios';
+import { HttpModule } from "@nestjs/axios";
 import { ExternalServicesService } from "./external-services.service";
 
 /**
  * Represents the module for the matching services in the application.
  * This module is responsible for importing the necessary dependencies,
- * defining the controllers and providers, and configuring the matching services.
+ * defining the controllers and providers, and configuring the module.
  */
 @Module({
   imports: [
@@ -25,6 +25,7 @@ import { ExternalServicesService } from "./external-services.service";
         name: MatchingService.name,
         useFactory: async (connection: Connection) => {
           const schema = MatchingServicesSchema;
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
           const AutoIncrement = require("mongoose-sequence")(connection);
           schema.plugin(AutoIncrement, { inc_field: "matching_service_id" });
           return schema;
@@ -35,9 +36,13 @@ import { ExternalServicesService } from "./external-services.service";
     BullModule.registerQueueAsync({
       name: "process",
     }),
-    HttpModule
+    HttpModule,
   ],
   controllers: [MatchingServicesController, QueueController],
-  providers: [MatchingServicesService, ProcessConsumer, ExternalServicesService],
+  providers: [
+    MatchingServicesService,
+    ProcessConsumer,
+    ExternalServicesService,
+  ],
 })
 export class MatchingServicesModule {}
