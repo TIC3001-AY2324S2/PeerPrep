@@ -30,7 +30,7 @@ const addQuestion = async (req, res) => {
     const question = await Address.create({
       title,
       description,
-      category, 
+      category,
       complexity
     })
 
@@ -50,7 +50,7 @@ const addQuestion = async (req, res) => {
 // @route   PUT /api/question
 // @access  Public
 const updateQuestion = async (req, res) => {
-  const { title, description, category, complexity }= req.body
+  const { title, description, category, complexity } = req.body
 
   if (!title || !description || !category || !complexity) {
     return res.status(400).json({ message: 'Please enter all fields.' })
@@ -84,7 +84,7 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
   try {
     const question = await Question.findById(req.params.id)
-    await question.deleteOne()   
+    await question.deleteOne()
     res.status(200).json({ message: 'Question removed' })
   } catch (error) {
     res.status(404).json({ message: 'Question not found' })
