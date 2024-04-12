@@ -10,6 +10,7 @@ export function defineConfig(appInitialConfig: AppInitialConfig) {
       updateEndpoint: `${appInitialConfig.userServiceEndpoint}/users`,
       readEndpoint: `${appInitialConfig.userServiceEndpoint}/users`,
       deleteEndpoint: `${appInitialConfig.userServiceEndpoint}/users`,
+      updatePrivilegeEndpoint: `${appInitialConfig.userServiceEndpoint}/users/update-privilege`,
     },
   };
 }

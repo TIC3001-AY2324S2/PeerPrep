@@ -3,6 +3,7 @@ import { useGetIdentity } from "@refinedev/core";
 import { HamburgerMenu, RefineThemedLayoutV2HeaderProps, useThemedLayoutContext } from "@refinedev/mui";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,15 +12,9 @@ import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
 import { ColorModeContext } from "../../../contexts/color-mode";
 import { AccountMenu } from "../accountMenu";
 import { PeerPrepIcon } from "../../icons";
-import Link from "@mui/material/Link";
+import { IUser } from "../types";
 
 type LayoutHeaderProps = { showHamburger?: boolean } & RefineThemedLayoutV2HeaderProps;
-
-type IUser = {
-  id: number;
-  name: string;
-  avatar: string;
-};
 
 const Logo: React.FC = () => {
   const { siderCollapsed } = useThemedLayoutContext();
@@ -43,7 +38,6 @@ export const Header: React.FC<LayoutHeaderProps> = ({
   showHamburger = true,
 }) => {
   const { mode, setMode } = useContext(ColorModeContext);
-
   const { data: user } = useGetIdentity<IUser>();
 
   return (
@@ -68,7 +62,7 @@ export const Header: React.FC<LayoutHeaderProps> = ({
               {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
             </IconButton>
 
-            {(user?.avatar || user?.name) && (
+            {(user?.avatar || user?.username) && (
               <AccountMenu />
             )}
           </Stack>

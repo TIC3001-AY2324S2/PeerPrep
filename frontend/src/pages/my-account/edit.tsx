@@ -1,101 +1,41 @@
-import { useCustomMutation } from "@refinedev/core";
+import { useGetIdentity, useNavigation } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Edit } from "@refinedev/mui";
 import Box from "@mui/material/Box";
-import Button, { ButtonProps } from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import AddModeratorIcon from '@mui/icons-material/AddModerator';
-import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
-import { appConfig } from "../../config";
+import * as utils from "../../utils";
+import { IUser } from "../../components/layout/types";
 
-export const UserEdit = () => {
+export const MyAccountEdit = () => {
+  const { data: user } = useGetIdentity<IUser>();
+  const { push } = useNavigation();
   const {
     saveButtonProps,
     refineCore: { queryResult, formLoading },
     register,
     formState: { errors },
     watch,
-  } = useForm({});
-  const { mutate } = useCustomMutation();
-
-  const record = queryResult?.data?.data;
+  } = useForm({
+    refineCoreProps: user?.email
+      ? {
+        action: "edit",
+        resource: "users",
+        id: utils.base64UrlEncode(user.email),
+        redirect: false,
+        onMutationSuccess: () => {
+          push("/my-account");
+        }
+      }
+      : {}
+  });
 
   // Clear password
-  if (record) {
-    record.password = "";
-  }
-
-  const isGrantAdminPrivilegeButtonVisible = record && !record.isAdmin;
-  const grantAdminPrivilegeButtonProps = {
-    ...(queryResult?.isLoading ? { disabled: true } : {}),
-    startIcon: <AddModeratorIcon />,
-    onClick: () => {
-      mutate({
-        url: appConfig.userService.updatePrivilegeEndpoint,
-        method: "patch",
-        values: {
-          email: record?.email,
-          isAdmin: true,
-        },
-        successNotification: () => {
-          return {
-            message: "Update successful.",
-            description: "Success",
-            type: "success",
-          };
-        },
-      }, {
-        onSuccess: () => {
-          queryResult?.refetch();
-        },
-      });
-    }
-  };
-  const GrantAdminPrivilegeButton = (props: ButtonProps) => {
-    return <Button {...props}>Grant Admin Privilege</Button>;
-  }
-
-  const isRevokeAdminPrivilegeButtonVisible = record && record.isAdmin;
-  const revokeAdminPrivilegeButtonProps = {
-    ...(queryResult?.isLoading ? { disabled: true } : {}),
-    startIcon: <RemoveModeratorIcon />,
-    onClick: () => {
-      mutate({
-        url: appConfig.userService.updatePrivilegeEndpoint,
-        method: "patch",
-        values: {
-          email: record?.email,
-          isAdmin: false,
-        },
-        successNotification: () => {
-          return {
-            message: "Update successful.",
-            description: "Success",
-            type: "success",
-          };
-        },
-      }, {
-        onSuccess: () => {
-          queryResult?.refetch();
-        },
-      });
-    }
-  };
-  const RevokeAdminPrivilegeButton = (props: ButtonProps) => {
-    return <Button color="error" {...props}>Revoke Admin Privilege</Button>;
+  if (queryResult?.data?.data) {
+    queryResult.data.data.password = "";
   }
 
   return (
-    <Edit
-      isLoading={formLoading}
-      saveButtonProps={saveButtonProps}
-      headerButtons={({ defaultButtons }) => (
-        <>
-          {isGrantAdminPrivilegeButtonVisible && <GrantAdminPrivilegeButton {...grantAdminPrivilegeButtonProps} />}
-          {isRevokeAdminPrivilegeButtonVisible && <RevokeAdminPrivilegeButton {...revokeAdminPrivilegeButtonProps} />}
-          {defaultButtons}
-        </>
-      )}>
+    <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column" }}
@@ -139,16 +79,6 @@ export const UserEdit = () => {
           type="text"
           label={"Email"}
           name="email"
-        />
-        <TextField
-          {...register("isAdmin")}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          disabled
-          label={"Admin"}
-          name="isAdmin"
         />
         <TextField
           {...register("password", {

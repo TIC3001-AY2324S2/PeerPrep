@@ -151,7 +151,7 @@ export async function updateUserPrivilege(req, res) {
   try {
     const { email, isAdmin } = req.body;
 
-    if (email && isAdmin) {
+    if (email && (isAdmin === true || isAdmin === false)) {
       console.log(`UPDATE USER PRIVILEGE: Email Obtained: ${email}`);
       const response = await _updateUserPrivilege(email, isAdmin);
       console.log(response);
